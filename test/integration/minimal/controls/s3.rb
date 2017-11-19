@@ -23,6 +23,8 @@ control 's3' do
     it { should have_versioning_enabled }
     it { should_not have_mfa_delete_enabled }
 
+    it { should have_logging_enabled(target_prefix: "log/s3/#{actual_s3_id}/") }
+
     it { should have_tag('Environment').value(expect_env) }
     it { should have_tag('Owner').value(expect_owner) }
     it { should have_tag('Application').value(expect_app) }

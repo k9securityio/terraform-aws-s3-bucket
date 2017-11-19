@@ -22,6 +22,11 @@ variable "app" {
   type = "string"
 }
 
+variable "acl" {
+  type    = "string"
+  default = "private"
+}
+
 variable "versioning_enabled" {
   type    = "string"
   default = "true"
@@ -30,6 +35,17 @@ variable "versioning_enabled" {
 variable "versioning_mfa_delete" {
   type    = "string"
   default = "false"
+}
+
+variable "logging_target_bucket" {
+  type        = "string"
+  description = "Bucket to use for request access logging"
+}
+
+variable "logging_target_prefix" {
+  type        = "string"
+  description = "(Optional) Override the default log prefix path of log/s3/<bucket name>/"
+  default     = ""
 }
 
 output "s3.id" {
