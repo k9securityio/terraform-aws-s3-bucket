@@ -1,0 +1,5 @@
+.terraform/
+terraform.tfstate*
+tf-test-plan.out
+.kitchen/
+infra-change*.tfplan
