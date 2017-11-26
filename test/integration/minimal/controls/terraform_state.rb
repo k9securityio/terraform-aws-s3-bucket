@@ -12,7 +12,7 @@ org = "qm"
 owner = "platform"
 region = "us-east-1"
 
-expected_bucket_name = "#{org}-#{env}-#{logical_name}"
+expected_bucket_name_base = "#{org}-#{env}-#{logical_name}"
 
 control 'terraform_state' do
   describe 'the Terraform state file' do
@@ -34,15 +34,15 @@ control 'terraform_state' do
       describe('s3 bucket') do
         describe('id') do
           subject { outputs['s3.id']['value'] }
-          it { is_expected.to eq(expected_bucket_name) }
+          it { is_expected.to match(/#{expected_bucket_name_base}-[\w]+/) }
         end
         describe('arn') do
           subject { outputs['s3.arn']['value'] }
-          it { is_expected.to eq("arn:aws:s3:::#{expected_bucket_name}") }
+          it { is_expected.to match(/arn:aws:s3:::#{expected_bucket_name_base}-[\w]+/) }
         end
         describe('bucket_domain_name') do
           subject { outputs['s3.bucket_domain_name']['value'] }
-          it { is_expected.to match(/#{expected_bucket_name}\.s3\.amazonaws\.com/) }
+          it { is_expected.to match(/#{expected_bucket_name_base}-[\w]+\.s3\.amazonaws\.com/) }
         end
       end
     end
@@ -59,7 +59,7 @@ control 'terraform_state' do
 
         describe('bucket') do
           subject { bucket_attributes['bucket'] }
-          it { is_expected.to eq(expected_bucket_name) }
+          it { is_expected.to match(/#{expected_bucket_name_base}-[\w]+/) }
         end
 
         describe('region') do

@@ -1,9 +1,13 @@
 // Instantiate a minimal version of the module for testing
+provider "aws" {
+  region = "us-east-1"
+}
 
 resource "random_id" "testing_suffix" {
   byte_length = 4
 }
 
+//Create a logging bucket specifically for this test to support shipping of the access logs produced by the it_minimal bucket
 resource "aws_s3_bucket" "log_bucket" {
   bucket = "qm-test-log-${random_id.testing_suffix.hex}"
   acl    = "log-delivery-write"
@@ -12,7 +16,7 @@ resource "aws_s3_bucket" "log_bucket" {
 module "it_minimal" {
   source = "../../../" //minimal integration test
 
-  logical_name = "${var.logical_name}"
+  logical_name = "${var.logical_name}-${random_id.testing_suffix.hex}"
   region       = "${var.region}"
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"

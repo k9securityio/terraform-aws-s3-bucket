@@ -1,11 +1,5 @@
-data "null_data_source" "bucket_name" {
-  inputs = {
-    value = "${var.org}-${var.env}-${var.logical_name}"
-  }
-}
-
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${data.null_data_source.bucket_name.outputs.value}"
+  bucket = "${var.org}-${var.env}-${var.logical_name}"
 
   region = "${var.region}"
 
@@ -18,7 +12,7 @@ resource "aws_s3_bucket" "bucket" {
 
   logging {
     target_bucket = "${var.logging_target_bucket}"
-    target_prefix = "${length(var.logging_target_prefix) == 0 ? "log/s3/${data.null_data_source.bucket_name.outputs.value}/" : var.logging_target_prefix }"
+    target_prefix = "${length(var.logging_target_prefix) == 0 ? "log/s3/${var.org}-${var.env}-${var.logical_name}/" : var.logging_target_prefix }"
   }
 
   force_destroy = true
