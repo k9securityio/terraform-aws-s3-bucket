@@ -1,0 +1,23 @@
+version: 2
+
+terraform: &terraform
+  docker:
+    - image: qualimente/terraform-infra-dev:0.11
+  working_directory: /module
+
+jobs:
+  build:
+    <<: *terraform
+    steps:
+      - checkout
+      - run:
+          name: add github.com to ~/.ssh/known_hosts
+          command: mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+      - run:
+          name: make infra
+          command: make all
+      - store_artifacts:
+          path: /module/.kitchen/
+      - run:
+          name: destroy minimal test infra
+          command: make destroy
