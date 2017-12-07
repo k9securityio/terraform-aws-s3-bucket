@@ -19,7 +19,7 @@ suites:
       name: terraform
       format: doc
       groups:
-        - name: default
+        - name: terraform
           controls:
             - s3
             - terraform_state
