@@ -50,3 +50,7 @@ variable "env" {
 variable "app" {
   type = "string"
 }
+
+output "sut.bucket.id" {
+  value = "${module.it_minimal.s3.id}"
+}

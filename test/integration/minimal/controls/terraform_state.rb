@@ -3,7 +3,12 @@ require 'rspec/expectations'
 
 require_relative 'spec_helper'
 
-tf_state_json = json(attribute 'terraform_state', {})
+#require 'pry'; binding.pry; #uncomment to jump into the debugger
+
+# temporarily replace dynamic resolution of tfstate location from attribute due to error:
+# can't convert Inspec::Attribute::DEFAULT_ATTRIBUTE to IO (Inspec::Attribute::DEFAULT_ATTRIBUTE#to_io gives Inspec::Attribute::DEFAULT_ATTRIBUTE)
+# tf_state_json = json(attribute 'terraform_state', {})
+tf_state_json = json("/module/terraform.tfstate.d/kitchen-terraform-minimal-aws/terraform.tfstate")
 
 logical_name = "testbucket"
 env = "testenv"
