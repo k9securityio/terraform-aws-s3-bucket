@@ -13,13 +13,13 @@ provisioner:
 platforms:
   - name: aws
 
+verifier:
+  name: terraform
+  format: doc
+  groups:
+    - name: terraform
+      controls:
+        - s3
+        - terraform_state
 suites:
   - name: minimal
-    verifier:
-      name: terraform
-      format: doc
-      groups:
-        - name: terraform
-          controls:
-            - s3
-            - terraform_state
