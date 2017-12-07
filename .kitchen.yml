@@ -1,27 +1,25 @@
 ---
 driver:
   name: terraform
+  root_module_directory: test/fixtures/minimal
+  variable_files:
+    - "test/fixtures/minimal/minimal.tfvars"
+  color: false
+  command_timeout: 600
+
+provisioner:
+  name: terraform
 
 platforms:
   - name: aws
 
 suites:
   - name: minimal
-    provisioner:
-      name: terraform
-      variable_files:
-        - "test/fixtures/minimal/minimal.tfvars"
-      apply_timeout: 600
-      color: false
-      directory: >-
-        test/fixtures/minimal
-      variables:
-        user: <%= ENV['USER'] %>
     verifier:
       name: terraform
       format: doc
       groups:
-        - name: terraform
+        - name: default
           controls:
-            - terraform_state
             - s3
+            - terraform_state

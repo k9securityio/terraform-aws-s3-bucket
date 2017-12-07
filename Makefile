@@ -1,7 +1,7 @@
 .PHONY: deps format converge verify destroy shell test kitchen build circleci-build
 
 IMAGE_NAME := qualimente/terraform-infra-dev
-IMAGE_TAG := 0.9
+IMAGE_TAG := 20171207-0154-7f2c1ed
 
 FQ_IMAGE := $(IMAGE_NAME):$(IMAGE_TAG)
 
@@ -61,7 +61,7 @@ deps:
 	fi;
 
 init:
-	@$(call terraform,init)
+	@$(call kitchen,create)
 
 format:
 	@$(call terraform,fmt)
