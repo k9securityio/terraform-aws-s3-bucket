@@ -4,6 +4,8 @@ tf_s3_bucket provides an s3 bucket configured with safe defaults and tagging.
 
 The metadata specified via variables will be used to construct a namespaced bucket name, apply appropriate tags, and configuree access logging.
 
+[![CircleCI](https://circleci.com/gh/qualimente/tf_s3_bucket.svg?style=svg)](https://circleci.com/gh/qualimente/tf_s3_bucket)
+
 ## Local Development and Testing
 
 Testing modules locally can be accomplished using a series of `Make` tasks
