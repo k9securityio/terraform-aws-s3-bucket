@@ -51,6 +51,6 @@ variable "app" {
   type = "string"
 }
 
-output "sut.bucket.id" {
+output "module_under_test.bucket.id" {
   value = "${module.it_minimal.s3.id}"
 }
