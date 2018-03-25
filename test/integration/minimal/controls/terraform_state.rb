@@ -107,6 +107,16 @@ control 'terraform_state' do
           it { is_expected.to eq("false") }
         end
 
+        describe('Encryption: Algorithm') do
+          subject { bucket_attributes['server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.0.sse_algorithm'] }
+          it { is_expected.to eq("aws:kms") }
+        end
+
+        describe('Encryption: Master Key Id') do
+          subject { bucket_attributes['server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.0.kms_master_key_id'] }
+          it { is_expected.to eq("") }
+        end
+
       end
     end
 

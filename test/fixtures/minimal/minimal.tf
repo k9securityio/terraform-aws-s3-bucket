@@ -27,6 +27,13 @@ module "it_minimal" {
   app   = "${var.app}"
 }
 
+resource "aws_s3_bucket_object" "test" {
+  bucket       = "${module.it_minimal.s3.id}"
+  key          = "test"
+  content_type = "application/json"
+  content      = "{message: 'hello world'}"
+}
+
 variable "logical_name" {
   type = "string"
 }
