@@ -9,8 +9,9 @@ resource "random_id" "testing_suffix" {
 
 //Create a logging bucket specifically for this test to support shipping of the access logs produced by the it_minimal bucket
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "qm-test-log-${random_id.testing_suffix.hex}"
-  acl    = "log-delivery-write"
+  bucket        = "qm-test-log-${random_id.testing_suffix.hex}"
+  acl           = "log-delivery-write"
+  force_destroy = "true"
 }
 
 module "it_minimal" {
@@ -25,6 +26,13 @@ module "it_minimal" {
   owner = "${var.owner}"
   env   = "${var.env}"
   app   = "${var.app}"
+}
+
+resource "aws_s3_bucket_object" "test" {
+  bucket       = "${module.it_minimal.s3.id}"
+  key          = "test"
+  content_type = "application/json"
+  content      = "{message: 'hello world'}"
 }
 
 variable "logical_name" {

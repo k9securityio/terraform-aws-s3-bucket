@@ -46,6 +46,12 @@ variable "versioning_mfa_delete" {
   default     = "false"
 }
 
+variable "kms_master_key_id" {
+  type        = "string"
+  description = "(Optional) ARN of KMS key to encrypt objects with.  Empty string means use the default master key."
+  default     = ""
+}
+
 variable "logging_target_bucket" {
   type        = "string"
   description = "Bucket to use for request access logging"
