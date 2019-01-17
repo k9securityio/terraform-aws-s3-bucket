@@ -93,7 +93,7 @@ resource "aws_s3_bucket_policy" "bucket" {
             "Sid": "PermitOnlyRolesWithinAccount",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "<account-id>"
+                "AWS": "${data.aws_caller_identity.current.account_id}"
             },
             "Action": "*",
             "Resource": [
