@@ -46,7 +46,9 @@ resource "aws_s3_bucket_policy" "bucket" {
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:*",
-            "Resource": "arn:aws:s3:::<bucket-name>",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}"
+            ],
             "Condition": {
                 "Bool": {
                     "aws:SecureTransport": "false"
@@ -58,7 +60,9 @@ resource "aws_s3_bucket_policy" "bucket" {
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::<bucket-name>/*",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}/*"
+            ],
             "Condition": {
                 "StringNotEquals": {
                     "s3:x-amz-server-side-encryption": "AES256"
@@ -70,7 +74,9 @@ resource "aws_s3_bucket_policy" "bucket" {
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::<bucket-name>/*",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}/*"
+            ],
             "Condition": {
                 "Null": {
                     "s3:x-amz-server-side-encryption": "true"
@@ -84,7 +90,9 @@ resource "aws_s3_bucket_policy" "bucket" {
                 "AWS": "<account-id>"
             },
             "Action": "*",
-            "Resource": "arn:aws:s3:::<bucket-name>"
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}"
+            ],
         }
     ]
 }
