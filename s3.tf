@@ -98,7 +98,7 @@ resource "aws_s3_bucket_policy" "bucket" {
             "Action": "*",
             "Resource": [
                 "${aws_s3_bucket.bucket.arn}"
-            ],
+            ]
         }
     ]
 }
