@@ -39,13 +39,16 @@ resource "null_resource" "delay" {
     "before" = "${null_resource.before.id}"
   }
 }
+  
+resource "null_resource" "after" {
+  depends_on = ["null_resource.delay"]
+}
 
 resource "aws_s3_bucket_object" "test" {
   bucket       = "${module.it_minimal.s3.id}"
   key          = "test"
   content_type = "application/json"
   content      = "{message: 'hello world'}"
-  depends_on = ["null_resource.delay"]
 }
 
 variable "logical_name" {
