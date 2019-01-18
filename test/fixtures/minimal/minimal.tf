@@ -27,12 +27,25 @@ module "it_minimal" {
   env   = "${var.env}"
   app   = "${var.app}"
 }
+  
+resource "null_resource" "before" {
+}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 10"
+  }
+  triggers = {
+    "before" = "${null_resource.before.id}"
+  }
+}
 
 resource "aws_s3_bucket_object" "test" {
   bucket       = "${module.it_minimal.s3.id}"
   key          = "test"
   content_type = "application/json"
   content      = "{message: 'hello world'}"
+  depends_on = ["null_resource.delay"]
 }
 
 variable "logical_name" {
