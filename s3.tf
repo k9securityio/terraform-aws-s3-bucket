@@ -71,7 +71,7 @@ resource "aws_s3_bucket_policy" "bucket" {
             ],
             "Condition": {
                 "StringNotEquals": {
-                    "s3:x-amz-server-side-encryption": "AES256"
+                    "s3:x-amz-server-side-encryption": "aws:kms"
                 }
             }
         },
