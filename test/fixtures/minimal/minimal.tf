@@ -33,15 +33,11 @@ resource "null_resource" "before" {
 
 resource "null_resource" "delay" {
   provisioner "local-exec" {
-    command = "sleep 10"
+    command = "sleep 30"
   }
   triggers = {
     "before" = "${null_resource.before.id}"
   }
-}
-  
-resource "null_resource" "after" {
-  depends_on = ["null_resource.delay"]
 }
 
 resource "aws_s3_bucket_object" "test" {
@@ -49,6 +45,7 @@ resource "aws_s3_bucket_object" "test" {
   key          = "test"
   content_type = "application/json"
   content      = "{message: 'hello world'}"
+  depends_on   = ["null_resource.delay"]
 }
 
 variable "logical_name" {
