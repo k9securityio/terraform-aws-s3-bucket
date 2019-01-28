@@ -27,22 +27,31 @@ module "it_minimal" {
   env   = "${var.env}"
   app   = "${var.app}"
 }
-  
-resource "null_resource" "before" {
-}
+
+resource "null_resource" "before" {}
 
 resource "null_resource" "delay" {
   provisioner "local-exec" {
-    command = "sleep 30"
+    command = "sleep 60"
   }
+
   triggers = {
     "before" = "${null_resource.before.id}"
   }
 }
 
+resource "aws_kms_key" "a" {
+  description = "Key for testing tf_s3_bucket infra and secure-by-default policy"
+}
+
+resource "aws_kms_alias" "a" {
+  name          = "alias/tf_s3_bucket"
+  target_key_id = "${aws_kms_key.a.key_id}"
+}
+
 resource "aws_s3_bucket_object" "test" {
   bucket       = "${module.it_minimal.s3.id}"
-  key          = "test"
+  key          = "aws_kms_key"
   content_type = "application/json"
   content      = "{message: 'hello world'}"
   depends_on   = ["null_resource.delay"]
