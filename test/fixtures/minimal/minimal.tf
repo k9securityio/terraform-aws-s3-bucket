@@ -40,13 +40,13 @@ resource "null_resource" "delay" {
   }
 }
 
-resource "aws_kms_key" "a" {
+resource "aws_kms_key" "test" {
   description = "Key for testing tf_s3_bucket infra and secure-by-default policy"
 }
 
 resource "aws_kms_alias" "a" {
-  name          = "alias/tf_s3_bucket"
-  target_key_id = "${aws_kms_key.a.key_id}"
+  name          = "alias/${var.logical_name}-${random_id.testing_suffix.hex}"
+  target_key_id = "${aws_kms_key.test.key_id}"
 }
 
 resource "aws_s3_bucket_object" "test" {
