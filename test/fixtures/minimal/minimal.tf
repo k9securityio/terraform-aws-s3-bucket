@@ -26,6 +26,8 @@ module "it_minimal" {
   owner = "${var.owner}"
   env   = "${var.env}"
   app   = "${var.app}"
+
+  kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 }
 
 resource "null_resource" "before" {}
@@ -86,4 +88,8 @@ variable "app" {
 
 output "module_under_test.bucket.id" {
   value = "${module.it_minimal.s3.id}"
+}
+
+output "kms_key.test.key_id" {
+  value = "${aws_kms_key.test.key_id}"
 }
