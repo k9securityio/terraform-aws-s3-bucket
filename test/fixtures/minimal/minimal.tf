@@ -51,10 +51,13 @@ resource "aws_kms_alias" "test" {
 
 resource "aws_s3_bucket_object" "test" {
   bucket       = "${module.it_minimal.s3.id}"
-  key          = "${aws_kms_alias.test.name}"
+  key          = "an/object/key"
+
   content_type = "application/json"
   content      = "{message: 'hello world'}"
   depends_on   = ["null_resource.delay"]
+
+  kms_key_id   = "${aws_kms_alias.test.target_key_arn}"
 }
 
 variable "logical_name" {
