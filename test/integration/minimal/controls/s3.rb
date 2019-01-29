@@ -30,6 +30,8 @@ control 's3' do
     it { should have_tag('Application').value(expect_app) }
     it { should have_tag('ManagedBy').value('Terraform') }
 
+    it { should have_object('an/object/key') }
+
   end
 
 end
