@@ -44,14 +44,14 @@ resource "aws_kms_key" "test" {
   description = "Key for testing tf_s3_bucket infra and secure-by-default policy"
 }
 
-resource "aws_kms_alias" "a" {
+resource "aws_kms_alias" "test" {
   name          = "alias/${var.logical_name}-${random_id.testing_suffix.hex}"
   target_key_id = "${aws_kms_key.test.key_id}"
 }
 
 resource "aws_s3_bucket_object" "test" {
   bucket       = "${module.it_minimal.s3.id}"
-  key          = "aws_kms_key"
+  key          = "${aws_kms_alias.test.name}"
   content_type = "application/json"
   content      = "{message: 'hello world'}"
   depends_on   = ["null_resource.delay"]
