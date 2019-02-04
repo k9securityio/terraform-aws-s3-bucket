@@ -3,6 +3,9 @@ require 'rspec/expectations'
 
 require_relative 'spec_helper'
 
+
+actual_test_kms_key_id = attribute 'kms_key.test.key_id', {}
+
 #require 'pry'; binding.pry; #uncomment to jump into the debugger
 
 # temporarily replace dynamic resolution of tfstate location from attribute due to error:
@@ -114,7 +117,7 @@ control 'terraform_state' do
 
         describe('Encryption: Master Key Id') do
           subject { bucket_attributes['server_side_encryption_configuration.0.rule.0.apply_server_side_encryption_by_default.0.kms_master_key_id'] }
-          it { is_expected.to eq("") }
+          it { is_expected.to eq(actual_test_kms_key_id) }
         end
 
       end

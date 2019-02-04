@@ -26,13 +26,40 @@ module "it_minimal" {
   owner = "${var.owner}"
   env   = "${var.env}"
   app   = "${var.app}"
+
+  kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+}
+
+resource "null_resource" "before" {}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+
+  triggers = {
+    "before" = "${null_resource.before.id}"
+  }
+}
+
+resource "aws_kms_key" "test" {
+  description = "Key for testing tf_s3_bucket infra and secure-by-default policy"
+}
+
+resource "aws_kms_alias" "test" {
+  name          = "alias/${var.logical_name}-${random_id.testing_suffix.hex}"
+  target_key_id = "${aws_kms_key.test.key_id}"
 }
 
 resource "aws_s3_bucket_object" "test" {
-  bucket       = "${module.it_minimal.s3.id}"
-  key          = "test"
+  bucket = "${module.it_minimal.s3.id}"
+  key    = "an/object/key"
+
   content_type = "application/json"
   content      = "{message: 'hello world'}"
+  depends_on   = ["null_resource.delay"]
+
+  kms_key_id = "${aws_kms_alias.test.target_key_arn}"
 }
 
 variable "logical_name" {
@@ -61,4 +88,8 @@ variable "app" {
 
 output "module_under_test.bucket.id" {
   value = "${module.it_minimal.s3.id}"
+}
+
+output "kms_key.test.key_id" {
+  value = "${aws_kms_key.test.key_id}"
 }

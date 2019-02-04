@@ -33,3 +33,74 @@ resource "aws_s3_bucket" "bucket" {
     ManagedBy   = "Terraform"
   }
 }
+
+data "aws_caller_identity" "current" {}
+
+output "account_id" {
+  value = "${data.aws_caller_identity.current.account_id}"
+}
+
+resource "aws_s3_bucket_policy" "bucket" {
+  bucket = "${aws_s3_bucket.bucket.id}"
+
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DenyUnSecureCommunications",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}"
+            ],
+            "Condition": {
+                "Bool": {
+                    "aws:SecureTransport": "false"
+                }
+            }
+        },
+        {
+            "Sid": "DenyIncorrectEncryptionHeader",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:PutObject",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}/*"
+            ],
+            "Condition": {
+                "StringNotEquals": {
+                    "s3:x-amz-server-side-encryption": "aws:kms"
+                }
+            }
+        },
+        {
+            "Sid": "DenyUnEncryptedObjectUploads",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:PutObject",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}/*"
+            ],
+            "Condition": {
+                "Null": {
+                    "s3:x-amz-server-side-encryption": "true"
+                }
+            }
+        },
+        {
+            "Sid": "PermitOnlyRolesWithinAccount",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "${data.aws_caller_identity.current.account_id}"
+            },
+            "Action": "*",
+            "Resource": [
+                "${aws_s3_bucket.bucket.arn}"
+            ]
+        }
+    ]
+}
+POLICY
+}
