@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 locals {
-  policy_template_file_path = "${path.module}/secure-by-default.json"
+  policy_template_file_path = "${path.module}/${var.user_specified_template}"
 }
 
 data "aws_caller_identity" "current" {}
