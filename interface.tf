@@ -8,6 +8,12 @@ variable "region" {
   description = "The region to instantiate the bucket in"
 }
 
+variable "user_specified_template" {
+  description = "(optional) policy template to render, not a file path; if unspecified, ${path.module}/secure-by-default.json will be loaded instead"
+  type        = "string"
+  default     = "secure-by-default.json"
+}
+
 variable "org" {
   type        = "string"
   description = "Short id of the organization that owns the bucket"
