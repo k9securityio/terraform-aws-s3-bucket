@@ -22,6 +22,8 @@ module "it_minimal" {
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
+  user_specified_template = "${var.user_specified_template}"
+
   org   = "${var.org}"
   owner = "${var.owner}"
   env   = "${var.env}"
@@ -68,6 +70,12 @@ variable "logical_name" {
 
 variable "region" {
   type = "string"
+}
+
+variable "user_specified_template" {
+  description = "(optional) policy template to render, not a file path; if unspecified, ${path.module}/secure-by-default.json will be loaded instead"
+  type        = "string"
+  default     = "secure-by-default.json"
 }
 
 variable "org" {
