@@ -33,13 +33,13 @@ module "it_minimal" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  bucket_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+  logical_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
 }
 
 data "template_file" "my_custom_bucket_policy" {
   template = "${file("${path.module}/custom_bucket_policy.json")}"
   vars = {
-    aws_s3_bucket_arn  = "arn:aws:s3:::${local.bucket_name_custom_policy}"
+    aws_s3_bucket_arn  = "arn:aws:s3:::${var.org}-${var.env}-${local.logical_name_custom_policy}"
     current_account_id = "${data.aws_caller_identity.current.account_id}"
   }
 }
@@ -47,7 +47,7 @@ data "template_file" "my_custom_bucket_policy" {
 module "it_minimal_custom_policy" {
   source = "../../../" //minimal integration test
 
-  logical_name = "${local.bucket_name_custom_policy}"
+  logical_name = "${local.logical_name_custom_policy}"
   region       = "${var.region}"
 
   policy = "${data.template_file.my_custom_bucket_policy.rendered}"
