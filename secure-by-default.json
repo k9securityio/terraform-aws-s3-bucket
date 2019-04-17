@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "DenyUnSecureCommunications",
+            "Sid": "DenyInsecureCommunications",
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:*",
@@ -30,7 +30,7 @@
             }
         },
         {
-            "Sid": "DenyUnEncryptedObjectUploads",
+            "Sid": "DenyUnencryptedObjectUploads",
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
