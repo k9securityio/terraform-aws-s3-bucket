@@ -6,7 +6,9 @@
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:*",
-            "Resource": [],
+            "Resource": [
+                "${aws_s3_bucket_arn}"
+            ],
             "Condition": {
                 "Bool": {
                     "aws:SecureTransport": "false"
@@ -18,7 +20,9 @@
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
-            "Resource": [],
+            "Resource": [
+                "${aws_s3_bucket_arn}/*"
+            ],
             "Condition": {
                 "StringNotEquals": {
                     "s3:x-amz-server-side-encryption": "aws:kms"
@@ -30,7 +34,9 @@
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
-            "Resource": [],
+            "Resource": [
+                "${aws_s3_bucket_arn}/*"
+            ],
             "Condition": {
                 "Null": {
                     "s3:x-amz-server-side-encryption": "true"
@@ -44,7 +50,9 @@
                 "AWS": "${current_account_id}"
             },
             "Action": "*",
-            "Resource": []
+            "Resource": [
+                "${aws_s3_bucket_arn}"
+            ]
         }
     ]
 }
