@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 locals {
-  policy_template_file_path = "${path.module}/${var.user_specified_template}"
+  policy_template_file_path = "${path.module}/${var.policy}"
 }
 
 data "aws_caller_identity" "current" {}
@@ -56,5 +56,5 @@ data "template_file" "access_policy_template" {
 resource "aws_s3_bucket_policy" "bucket" {
   bucket = "${aws_s3_bucket.bucket.id}"
 
-  policy = "${data.template_file.access_policy_template.rendered}"
+  policy = "${path.module}/it_minimal_custom_policy.policy"
 }
