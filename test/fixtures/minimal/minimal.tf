@@ -22,7 +22,34 @@ module "it_minimal" {
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
-  user_specified_template = "${var.user_specified_template}"
+  org   = "${var.org}"
+  owner = "${var.owner}"
+  env   = "${var.env}"
+  app   = "${var.app}"
+
+  kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+}
+
+
+data "aws_caller_identity" "current" {}
+
+data "template" "my_custom_bucket_policy" {
+  template = "${file(${path.module}/custom_bucket_policy.json)}"
+
+  vars = {
+      current_account_id = "${data.aws_caller_identity.current.account_id}"
+  }
+}
+
+module "it_minimal_custom_policy" {
+  source = "../../../" //minimal integration test
+
+  logical_name = "${var.logical_name}-${random_id.testing_suffix.hex}"
+  region       = "${var.region}"
+
+  policy = "${data.template.my_custom_bucket_policy.rendered}"
+
+  logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
   org   = "${var.org}"
   owner = "${var.owner}"
@@ -31,6 +58,7 @@ module "it_minimal" {
 
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 }
+
 
 resource "null_resource" "before" {}
 
@@ -72,8 +100,8 @@ variable "region" {
   type = "string"
 }
 
-variable "user_specified_template" {
-  description = "(optional) policy template to render, not a file path; if unspecified, ${path.module}/secure-by-default.json will be loaded instead"
+variable "policy" {
+  description = "(optional) fully rendered policy template; if unspecified, secure-by-default.json will be used"
   type        = "string"
   default     = "secure-by-default.json"
 }
