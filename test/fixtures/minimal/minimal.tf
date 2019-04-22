@@ -30,24 +30,27 @@ module "it_minimal" {
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 }
 
-
 data "aws_caller_identity" "current" {}
 
-data "template" "my_custom_bucket_policy" {
-  template = "${file(${path.module}/custom_bucket_policy.json)}"
+locals {
+  logical_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+}
 
+data "template_file" "my_custom_bucket_policy" {
+  template = "${file("${path.module}/custom_bucket_policy.json")}"
   vars = {
-      current_account_id = "${data.aws_caller_identity.current.account_id}"
+    aws_s3_bucket_arn  = "arn:aws:s3:::${var.org}-${var.env}-${local.logical_name_custom_policy}"
+    current_account_id = "${data.aws_caller_identity.current.account_id}"
   }
 }
 
 module "it_minimal_custom_policy" {
   source = "../../../" //minimal integration test
 
-  logical_name = "${var.logical_name}-${random_id.testing_suffix.hex}"
+  logical_name = "${local.logical_name_custom_policy}"
   region       = "${var.region}"
 
-  policy = "${data.template.my_custom_bucket_policy.rendered}"
+  policy = "${data.template_file.my_custom_bucket_policy.rendered}"
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
@@ -98,12 +101,6 @@ variable "logical_name" {
 
 variable "region" {
   type = "string"
-}
-
-variable "policy" {
-  description = "(optional) fully rendered policy template; if unspecified, secure-by-default.json will be used"
-  type        = "string"
-  default     = "secure-by-default.json"
 }
 
 variable "org" {

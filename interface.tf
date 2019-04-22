@@ -9,9 +9,9 @@ variable "region" {
 }
 
 variable "policy" {
-  description = "(optional) fully rendered policy template; if unspecified, secure-by-default.json will be used"
+  description = "(optional) fully rendered policy; if unspecified, the secure-by-default.json policy will be rendered and used"
   type        = "string"
-  default     = "secure-by-default.json"
+  default     = ""
 }
 
 variable "org" {

@@ -35,7 +35,9 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 locals {
-  policy_template_file_path = "${path.module}/${var.policy}"
+  use_custom_policy = "${length(var.policy) > 0}"
+
+  policy = "${local.use_custom_policy ? var.policy : data.template_file.default_access_policy.rendered}"
 }
 
 data "aws_caller_identity" "current" {}
@@ -44,8 +46,8 @@ output "account_id" {
   value = "${data.aws_caller_identity.current.account_id}"
 }
 
-data "template_file" "access_policy_template" {
-  template = "${file(local.policy_template_file_path)}"
+data "template_file" "default_access_policy" {
+  template = "${file("${path.module}/secure-by-default.json")}"
 
   vars = {
     aws_s3_bucket_arn  = "${aws_s3_bucket.bucket.arn}"
@@ -56,5 +58,5 @@ data "template_file" "access_policy_template" {
 resource "aws_s3_bucket_policy" "bucket" {
   bucket = "${aws_s3_bucket.bucket.id}"
 
-  policy = "${path.module}/it_minimal_custom_policy.policy"
+  policy = "${local.policy}"
 }
