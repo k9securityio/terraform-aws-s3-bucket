@@ -38,6 +38,7 @@ locals {
 
 data "template_file" "my_custom_bucket_policy" {
   template = "${file("${path.module}/custom_bucket_policy.json")}"
+
   vars = {
     aws_s3_bucket_arn  = "arn:aws:s3:::${var.org}-${var.env}-${local.logical_name_custom_policy}"
     current_account_id = "${data.aws_caller_identity.current.account_id}"
@@ -61,7 +62,6 @@ module "it_minimal_custom_policy" {
 
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 }
-
 
 resource "null_resource" "before" {}
 
@@ -125,4 +125,8 @@ output "module_under_test.bucket.id" {
 
 output "kms_key.test.key_id" {
   value = "${aws_kms_key.test.key_id}"
+}
+
+output "module_under_test.bucket.policy" {
+  value = "${data.template_file.my_custom_bucket_policy.rendered}"
 }
