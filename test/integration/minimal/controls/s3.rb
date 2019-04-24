@@ -10,6 +10,8 @@ expect_env = "testenv"
 expect_app = "testapp"
 expect_owner = "platform"
 
+bucket_policy = attribute 'module_under_test.bucket.policy', {}
+
 actual_s3_id = attribute 'module_under_test.bucket.id', {}
 
 #require 'pry'; binding.pry; #uncomment to jump into the debugger
@@ -31,6 +33,8 @@ control 's3' do
     it { should have_tag('ManagedBy').value('Terraform') }
 
     it { should have_object('an/object/key') }
+
+    it { should have_policy("#{bucket_policy}") }
 
   end
 
