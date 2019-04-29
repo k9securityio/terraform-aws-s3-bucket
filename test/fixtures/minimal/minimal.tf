@@ -123,10 +123,14 @@ output "module_under_test.bucket.id" {
   value = "${module.it_minimal.s3.id}"
 }
 
-output "kms_key.test.key_id" {
-  value = "${aws_kms_key.test.key_id}"
+output "module_under_test.custom_bucket.id" {
+  value = "${module.it_minimal_custom_policy.s3.id}"
 }
 
 output "module_under_test.bucket.custom_policy" {
   value = "${data.template_file.my_custom_bucket_policy.rendered}"
+}
+
+output "kms_key.test.key_id" {
+  value = "${aws_kms_key.test.key_id}"
 }
