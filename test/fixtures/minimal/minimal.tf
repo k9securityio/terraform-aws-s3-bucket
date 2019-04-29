@@ -127,6 +127,6 @@ output "kms_key.test.key_id" {
   value = "${aws_kms_key.test.key_id}"
 }
 
-output "module_under_test.bucket.policy" {
+output "module_under_test.bucket.custom_policy" {
   value = "${data.template_file.my_custom_bucket_policy.rendered}"
 }
