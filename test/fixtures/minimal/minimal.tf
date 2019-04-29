@@ -127,7 +127,7 @@ output "module_under_test.custom_bucket.id" {
   value = "${module.it_minimal_custom_policy.s3.id}"
 }
 
-output "module_under_test.bucket.custom_policy" {
+output "module_under_test.custom_bucket.policy" {
   value = "${data.template_file.my_custom_bucket_policy.rendered}"
 }
 
