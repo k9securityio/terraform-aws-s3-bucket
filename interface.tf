@@ -8,6 +8,12 @@ variable "region" {
   description = "The region to instantiate the bucket in"
 }
 
+variable "policy" {
+  description = "(optional) fully rendered policy; if unspecified, the secure-by-default.json policy will be rendered and used"
+  type        = "string"
+  default     = ""
+}
+
 variable "org" {
   type        = "string"
   description = "Short id of the organization that owns the bucket"

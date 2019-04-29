@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "DenyInsecureCommunications",
+            "Sid": "CustomDenyInsecureCommunications",
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:*",
@@ -16,7 +16,7 @@
             }
         },
         {
-            "Sid": "DenyIncorrectEncryptionHeader",
+            "Sid": "CustomDenyIncorrectEncryptionHeader",
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
@@ -30,7 +30,7 @@
             }
         },
         {
-            "Sid": "DenyUnencryptedObjectUploads",
+            "Sid": "CustomDenyUnencryptedObjectUploads",
             "Effect": "Deny",
             "Principal": "*",
             "Action": "s3:PutObject",
@@ -44,7 +44,7 @@
             }
         },
         {
-            "Sid": "PermitOnlyRolesWithinAccount",
+            "Sid": "CustomPermitOnlyRolesWithinAccount",
             "Effect": "Allow",
             "Principal": {
                 "AWS": "${current_account_id}"

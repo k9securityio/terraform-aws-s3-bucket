@@ -11,6 +11,9 @@ expect_app = "testapp"
 expect_owner = "platform"
 
 actual_s3_id = attribute 'module_under_test.bucket.id', {}
+actual_custom_s3_id = attribute 'module_under_test.custom_bucket.id', {}
+
+custom_bucket_policy = attribute 'module_under_test.custom_bucket.policy', {}
 
 #require 'pry'; binding.pry; #uncomment to jump into the debugger
 
@@ -31,7 +34,18 @@ control 's3' do
     it { should have_tag('ManagedBy').value('Terraform') }
 
     it { should have_object('an/object/key') }
+  end
 
+  describe "s3 bucket #{actual_custom_s3_id}" do
+    subject { s3_bucket(actual_custom_s3_id) }
+
+    its('policy.policy.read') { 
+      should match /CustomDenyInsecureCommunications/ 
+      should match /CustomDenyIncorrectEncryptionHeader/
+      should match /CustomDenyUnencryptedObjectUploads/
+      should match /CustomPermitOnlyRolesWithinAccount/
+    }
   end
 
 end
+

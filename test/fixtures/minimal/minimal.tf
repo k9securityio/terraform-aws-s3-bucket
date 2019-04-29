@@ -30,6 +30,39 @@ module "it_minimal" {
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 }
 
+data "aws_caller_identity" "current" {}
+
+locals {
+  logical_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+}
+
+data "template_file" "my_custom_bucket_policy" {
+  template = "${file("${path.module}/custom_bucket_policy.json")}"
+
+  vars = {
+    aws_s3_bucket_arn  = "arn:aws:s3:::${var.org}-${var.env}-${local.logical_name_custom_policy}"
+    current_account_id = "${data.aws_caller_identity.current.account_id}"
+  }
+}
+
+module "it_minimal_custom_policy" {
+  source = "../../../" //minimal integration test
+
+  logical_name = "${local.logical_name_custom_policy}"
+  region       = "${var.region}"
+
+  policy = "${data.template_file.my_custom_bucket_policy.rendered}"
+
+  logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
+
+  org   = "${var.org}"
+  owner = "${var.owner}"
+  env   = "${var.env}"
+  app   = "${var.app}"
+
+  kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+}
+
 resource "null_resource" "before" {}
 
 resource "null_resource" "delay" {
@@ -88,6 +121,14 @@ variable "app" {
 
 output "module_under_test.bucket.id" {
   value = "${module.it_minimal.s3.id}"
+}
+
+output "module_under_test.custom_bucket.id" {
+  value = "${module.it_minimal_custom_policy.s3.id}"
+}
+
+output "module_under_test.custom_bucket.policy" {
+  value = "${data.template_file.my_custom_bucket_policy.rendered}"
 }
 
 output "kms_key.test.key_id" {
