@@ -51,7 +51,7 @@ module "it_minimal_custom_policy" {
   logical_name = "${local.logical_name_custom_policy}"
   region       = "${var.region}"
 
-  policy = "${data.template_file.my_custom_bucket_policy.rendered}"
+  policy = "${module.least_privilege_policy.policy_json}"
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
@@ -93,6 +93,17 @@ resource "aws_s3_bucket_object" "test" {
   depends_on   = ["null_resource.delay"]
 
   kms_key_id = "${aws_kms_alias.test.target_key_arn}"
+}
+
+module "least_privilege_policy" {
+  source = "../../../policy"
+  s3_bucket_arn = "${module.it_minimal_custom_policy.s3.arn}"
+  allowed_aws_principal_arns = [
+    "arn:aws:iam::139710491120:role/k9-auditor",
+    "arn:aws:iam::139710491120:user/ci",
+    "arn:aws:iam::139710491120:user/skuenzli",
+    "arn:aws:iam::139710491120:user/ssutton"
+  ]
 }
 
 variable "logical_name" {
