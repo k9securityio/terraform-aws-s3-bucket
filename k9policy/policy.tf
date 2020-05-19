@@ -21,4 +21,32 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
   }
 
+  statement {
+    sid = "AllowRestrictedReadData"
+
+    actions = "${local.actions_read_data}"
+    resources = [
+      "${var.s3_bucket_arn}",
+      "${var.s3_bucket_arn}/*",
+    ]
+    principals {
+      type = "AWS"
+      identifiers = ["${var.allow_read_data}"]
+    }
+  }
+
+  statement {
+    sid = "AllowRestrictedWriteData"
+
+    actions = "${local.actions_write_data}"
+    resources = [
+      "${var.s3_bucket_arn}",
+      "${var.s3_bucket_arn}/*",
+    ]
+    principals {
+      type = "AWS"
+      identifiers = ["${var.allow_write_data}"]
+    }
+  }
+
 }

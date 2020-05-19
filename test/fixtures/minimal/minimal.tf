@@ -162,6 +162,8 @@ module "declarative_privilege_policy" {
   allow_administer_resource = "${local.administrator_arns}"
   allow_read_data           = "${local.read_data_arns}"
   allow_write_data          = "${local.write_data_arns}"
+  # unused: allow_delete_data          = [] (default)
+  # unused: allow_use_resource         = [] (default)
 }
 
 variable "logical_name" {
