@@ -34,6 +34,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   logical_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+  logical_name_declarative_policy = "${var.logical_name}-declarative-policy-${random_id.testing_suffix.hex}"
 }
 
 data "template_file" "my_custom_bucket_policy" {
@@ -45,7 +46,7 @@ data "template_file" "my_custom_bucket_policy" {
   }
 }
 
-module "it_minimal_custom_policy" {
+module "bucket_with_custom_policy" {
   source = "../../../" //minimal integration test
 
   logical_name = "${local.logical_name_custom_policy}"
@@ -97,7 +98,42 @@ resource "aws_s3_bucket_object" "test" {
 
 module "least_privilege_policy" {
   source = "../../../policy"
-  s3_bucket_arn = "${module.it_minimal_custom_policy.s3.arn}"
+  s3_bucket_arn = "${module.bucket_with_custom_policy.s3.arn}"
+
+  allowed_aws_principal_arns = [
+    "arn:aws:iam::139710491120:role/k9-auditor",
+    "arn:aws:iam::139710491120:user/ci",
+    "arn:aws:iam::139710491120:user/skuenzli",
+    "arn:aws:iam::139710491120:user/ssutton"
+  ]
+
+  allowed_api_actions = [
+    "s3:Get*",
+    "s3:Put*"
+  ]
+}
+
+module "bucket_with_declarative_policy" {
+  source = "../../../" //minimal integration test
+
+  logical_name = "${local.logical_name_declarative_policy}"
+  region       = "${var.region}"
+
+  policy = "${module.declarative_privilege_policy.policy_json}"
+
+  logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
+
+  org   = "${var.org}"
+  owner = "${var.owner}"
+  env   = "${var.env}"
+  app   = "${var.app}"
+
+  kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+}
+
+module "declarative_privilege_policy" {
+  source = "../../../k9policy"
+  s3_bucket_arn = "${module.bucket_with_declarative_policy.s3.arn}"
 
   allowed_aws_principal_arns = [
     "arn:aws:iam::139710491120:role/k9-auditor",
@@ -141,7 +177,7 @@ output "module_under_test.bucket.id" {
 }
 
 output "module_under_test.custom_bucket.id" {
-  value = "${module.it_minimal_custom_policy.s3.id}"
+  value = "${module.bucket_with_custom_policy.s3.id}"
 }
 
 output "module_under_test.custom_bucket.policy" {
