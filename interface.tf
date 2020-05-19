@@ -79,6 +79,16 @@ variable "block_public_policy" {
   default = "true"
 }
 
+variable "ignore_public_acls" {
+  type    = "string"
+  default = "true"
+}
+
+variable "restrict_public_buckets" {
+  type    = "string"
+  default = "true"
+}
+
 output "s3.id" {
   value = "${aws_s3_bucket.bucket.id}"
 }
