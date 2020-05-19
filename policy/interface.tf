@@ -6,7 +6,7 @@ variable "allowed_aws_principal_arns" {
 }
 
 variable "allowed_api_actions" {
-  type = "list"
+  type    = "list"
   default = ["s3:*"]
 }
 

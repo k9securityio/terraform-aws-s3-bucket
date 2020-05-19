@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "bucket" {
 
   logging {
     target_bucket = "${var.logging_target_bucket}"
-    target_prefix = "${length(var.logging_target_prefix) == 0 ? "log/s3/${var.org}-${var.env}-${var.logical_name}/" : var.logging_target_prefix }"
+    target_prefix = "${length(var.logging_target_prefix) == 0 ? "log/s3/${var.org}-${var.env}-${var.logical_name}/" : var.logging_target_prefix}"
   }
 
   force_destroy = true
