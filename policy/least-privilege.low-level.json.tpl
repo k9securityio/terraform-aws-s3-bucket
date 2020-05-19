@@ -50,7 +50,7 @@
       "Principal": {
         "AWS": ${allowed_aws_principals_json}
       },
-      "Action": "s3:*",
+      "Action": ${allowed_api_actions_json},
       "Resource": [
         "${aws_s3_bucket_arn}",
         "${aws_s3_bucket_arn}/*"

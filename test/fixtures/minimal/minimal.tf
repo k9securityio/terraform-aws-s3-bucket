@@ -98,11 +98,17 @@ resource "aws_s3_bucket_object" "test" {
 module "least_privilege_policy" {
   source = "../../../policy"
   s3_bucket_arn = "${module.it_minimal_custom_policy.s3.arn}"
+
   allowed_aws_principal_arns = [
     "arn:aws:iam::139710491120:role/k9-auditor",
     "arn:aws:iam::139710491120:user/ci",
     "arn:aws:iam::139710491120:user/skuenzli",
     "arn:aws:iam::139710491120:user/ssutton"
+  ]
+
+  allowed_api_actions = [
+    "s3:Get*",
+    "s3:Put*"
   ]
 }
 
@@ -140,6 +146,10 @@ output "module_under_test.custom_bucket.id" {
 
 output "module_under_test.custom_bucket.policy" {
   value = "${data.template_file.my_custom_bucket_policy.rendered}"
+}
+
+output "module_under_test.least_privilege_policy.policy_json" {
+  value = "${module.least_privilege_policy.policy_json}"
 }
 
 output "kms_key.test.key_id" {
