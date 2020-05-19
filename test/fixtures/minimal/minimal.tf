@@ -33,7 +33,7 @@ module "it_minimal" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  logical_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+  logical_name_custom_policy      = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
   logical_name_declarative_policy = "${var.logical_name}-declarative-policy-${random_id.testing_suffix.hex}"
 }
 
@@ -97,7 +97,7 @@ resource "aws_s3_bucket_object" "test" {
 }
 
 module "least_privilege_policy" {
-  source = "../../../policy"
+  source        = "../../../policy"
   s3_bucket_arn = "${module.bucket_with_custom_policy.s3.arn}"
 
   allowed_aws_principal_arns = [
@@ -131,10 +131,7 @@ module "bucket_with_declarative_policy" {
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 }
 
-module "declarative_privilege_policy" {
-  source = "../../../k9policy"
-  s3_bucket_arn = "${module.bucket_with_declarative_policy.s3.arn}"
-
+locals {
   allowed_aws_principal_arns = [
     "arn:aws:iam::139710491120:role/k9-auditor",
     "arn:aws:iam::139710491120:user/ci",
@@ -142,10 +139,29 @@ module "declarative_privilege_policy" {
     "arn:aws:iam::139710491120:user/ssutton"
   ]
 
-  allowed_api_actions = [
-    "s3:Get*",
-    "s3:Put*"
+
+  administrator_arns = [
+    "arn:aws:iam::139710491120:user/ci"
+    , "arn:aws:iam::139710491120:user/skuenzli"
   ]
+
+  read_data_arns = [
+    "arn:aws:iam::139710491120:user/skuenzli",
+    "arn:aws:iam::139710491120:user/ssutton",
+    # some app role
+  ]
+
+  write_data_arns = "${local.read_data_arns}"
+
+}
+
+module "declarative_privilege_policy" {
+  source        = "../../../k9policy"
+  s3_bucket_arn = "${module.bucket_with_declarative_policy.s3.arn}"
+
+  allow_administer_resource = "${local.administrator_arns}"
+  allow_read_data           = "${local.read_data_arns}"
+  allow_write_data          = "${local.write_data_arns}"
 }
 
 variable "logical_name" {

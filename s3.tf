@@ -38,6 +38,12 @@ locals {
   use_custom_policy = "${length(var.policy) > 0}"
 
   policy = "${local.use_custom_policy ? var.policy : data.template_file.default_access_policy.rendered}"
+
+  actions_administer_resource = ["s3:*"]
+  actions_use_resource = []
+  actions_read_data = ["s3:GetObject*", "s3:List*"]
+  actions_write_data = ["s3:PutObject*"]
+  actions_delete_data = ["s3:DeleteObject*"]
 }
 
 data "aws_caller_identity" "current" {}

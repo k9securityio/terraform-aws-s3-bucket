@@ -1,13 +1,30 @@
 variable "s3_bucket_arn" {
   type = "string"
 }
-variable "allowed_aws_principal_arns" {
-  type = "list"
+
+variable "allow_administer_resource" {
+  type    = "list"
+  default = []
 }
 
-variable "allowed_api_actions" {
+variable "allow_use_resource" {
   type    = "list"
-  default = ["s3:*"]
+  default = []
+}
+
+variable "allow_read_data" {
+  type    = "list"
+  default = []
+}
+
+variable "allow_write_data" {
+  type    = "list"
+  default = []
+}
+
+variable "allow_delete_data" {
+  type    = "list"
+  default = []
 }
 
 output "policy_json" {
