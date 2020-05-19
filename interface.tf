@@ -69,6 +69,16 @@ variable "logging_target_prefix" {
   default     = ""
 }
 
+variable "block_public_acls" {
+  type        = "string"
+  default     = "true"
+}
+
+variable "block_public_policy" {
+  type        = "string"
+  default     = "true"
+}
+
 output "s3.id" {
   value = "${aws_s3_bucket.bucket.id}"
 }
