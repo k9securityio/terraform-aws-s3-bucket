@@ -28,5 +28,5 @@ variable "allow_delete_data" {
 }
 
 output "policy_json" {
-  value = "${data.template_file.least_privilege.rendered}"
+  value = "${data.aws_iam_policy_document.bucket_policy.json}"
 }
