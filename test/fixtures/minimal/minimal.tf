@@ -157,7 +157,6 @@ module "declarative_privilege_policy" {
   allow_write_data          = "${local.write_data_arns}"
   # unused: allow_delete_data          = [] (default)
   # unused: allow_use_resource         = [] (default)
-  #allow_delete_data         = "${local.delete_data_arns}"
 }
 
 resource "local_file" "declarative_privilege_policy" {

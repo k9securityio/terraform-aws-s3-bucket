@@ -2,7 +2,6 @@ locals {
   # future work: retrieve action mappings from k9 api
   actions_administer_resource = ["s3:*"]
   actions_use_resource        = []
-  # actions_read_data           = ["s3:GetObject*", "s3:List*"]
   actions_read_data          = "${compact(split("\n", file("${path.module}/k9-access_capability.read-data.tsv")))}"
   actions_write_data          = "${compact(split("\n", file("${path.module}/k9-access_capability.write-data.tsv")))}"
   actions_delete_data         = "${compact(split("\n", file("${path.module}/k9-access_capability.delete-data.tsv")))}"
