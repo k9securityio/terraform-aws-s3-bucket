@@ -160,6 +160,11 @@ module "declarative_privilege_policy" {
   #allow_delete_data         = "${local.delete_data_arns}"
 }
 
+resource "local_file" "declarative_privilege_policy" {
+    content     = "${module.declarative_privilege_policy.policy_json}"
+    filename = "${path.module}/declarative_privilege_policy.json"
+}
+
 variable "logical_name" {
   type = "string"
 }
