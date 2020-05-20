@@ -132,14 +132,6 @@ module "bucket_with_declarative_policy" {
 }
 
 locals {
-  allowed_aws_principal_arns = [
-    "arn:aws:iam::139710491120:role/k9-auditor",
-    "arn:aws:iam::139710491120:user/ci",
-    "arn:aws:iam::139710491120:user/skuenzli",
-    "arn:aws:iam::139710491120:user/ssutton"
-  ]
-
-
   administrator_arns = [
     "arn:aws:iam::139710491120:user/ci"
     , "arn:aws:iam::139710491120:user/skuenzli"
@@ -152,7 +144,6 @@ locals {
   ]
 
   write_data_arns = "${local.read_data_arns}"
-
 }
 
 module "declarative_privilege_policy" {
