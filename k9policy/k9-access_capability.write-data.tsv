@@ -1,0 +1,10 @@
+s3:PutObject
+s3:PutObjectTagging
+s3:PutObjectVersionTagging
+s3:AbortMultipartUpload
+s3:PutObjectLegalHold
+s3:PutObjectRetention
+s3:ReplicateDelete
+s3:ReplicateObject
+s3:ReplicateTags
+s3:RestoreObject
