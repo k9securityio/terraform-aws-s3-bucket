@@ -1,10 +1,11 @@
 locals {
   # future work: retrieve action mappings from k9 api
   actions_administer_resource = ["s3:*"]
-  actions_use_resource = []
-  actions_read_data = ["s3:GetObject*", "s3:List*"]
-  actions_write_data = ["s3:PutObject*"]
-  actions_delete_data = ["s3:DeleteObject*"]
+  actions_use_resource        = []
+  actions_read_data           = ["s3:GetObject*", "s3:List*"]
+  actions_write_data          = ["s3:PutObject*"]
+  #actions_delete_data = ["s3:DeleteObject*"]
+  actions_delete_data = "${compact(split("\n", file("${path.module}/k9-access_capability.delete-data.tsv")))}"
 }
 
 data "aws_iam_policy_document" "bucket_policy" {
@@ -16,7 +17,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       "${var.s3_bucket_arn}",
     ]
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["${var.allow_administer_resource}"]
     }
   }
@@ -30,7 +31,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       "${var.s3_bucket_arn}/*",
     ]
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["${var.allow_read_data}"]
     }
   }
@@ -44,8 +45,26 @@ data "aws_iam_policy_document" "bucket_policy" {
       "${var.s3_bucket_arn}/*",
     ]
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["${var.allow_write_data}"]
+    }
+  }
+
+  statement {
+    sid = "AllowRestrictedDeleteData"
+
+    actions = "${local.actions_delete_data}"
+    resources = [
+      "${var.s3_bucket_arn}/*"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ArnEquals"
+      values   = ["${var.allow_delete_data}"]
+      variable = "aws:PrincipalArn"
     }
   }
 

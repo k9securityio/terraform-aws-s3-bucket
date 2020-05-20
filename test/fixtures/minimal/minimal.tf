@@ -144,6 +144,8 @@ locals {
   ]
 
   write_data_arns = "${local.read_data_arns}"
+
+  delete_data_arns = ["arn:aws:iam::139710491120:user/skuenzli"]
 }
 
 module "declarative_privilege_policy" {
@@ -155,6 +157,7 @@ module "declarative_privilege_policy" {
   allow_write_data          = "${local.write_data_arns}"
   # unused: allow_delete_data          = [] (default)
   # unused: allow_use_resource         = [] (default)
+  #allow_delete_data         = "${local.delete_data_arns}"
 }
 
 variable "logical_name" {
