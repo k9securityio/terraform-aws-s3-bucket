@@ -138,9 +138,8 @@ locals {
   ]
 
   read_data_arns = [
-    "arn:aws:iam::139710491120:user/skuenzli",
-    "arn:aws:iam::139710491120:user/ssutton",
-    # some app role
+    "arn:aws:iam::139710491120:user/skuenzli"
+    , "arn:aws:iam::139710491120:user/ssutton"
   ]
 
   write_data_arns = "${local.read_data_arns}"
@@ -160,8 +159,8 @@ module "declarative_privilege_policy" {
 }
 
 resource "local_file" "declarative_privilege_policy" {
-    content     = "${module.declarative_privilege_policy.policy_json}"
-    filename = "${path.module}/declarative_privilege_policy.json"
+  content  = "${module.declarative_privilege_policy.policy_json}"
+  filename = "${path.module}/declarative_privilege_policy.json"
 }
 
 variable "logical_name" {
