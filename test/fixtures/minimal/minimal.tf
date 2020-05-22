@@ -33,7 +33,8 @@ module "it_minimal" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  logical_name_custom_policy = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+  logical_name_custom_policy      = "${var.logical_name}-custom-policy-${random_id.testing_suffix.hex}"
+  logical_name_declarative_policy = "${var.logical_name}-declarative-policy-${random_id.testing_suffix.hex}"
 }
 
 data "template_file" "my_custom_bucket_policy" {
@@ -45,13 +46,13 @@ data "template_file" "my_custom_bucket_policy" {
   }
 }
 
-module "it_minimal_custom_policy" {
+module "bucket_with_custom_policy" {
   source = "../../../" //minimal integration test
 
   logical_name = "${local.logical_name_custom_policy}"
   region       = "${var.region}"
 
-  policy = "${data.template_file.my_custom_bucket_policy.rendered}"
+  policy = "${module.least_privilege_policy.policy_json}"
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
@@ -95,6 +96,73 @@ resource "aws_s3_bucket_object" "test" {
   kms_key_id = "${aws_kms_alias.test.target_key_arn}"
 }
 
+module "least_privilege_policy" {
+  source        = "../../../policy"
+  s3_bucket_arn = "${module.bucket_with_custom_policy.s3.arn}"
+
+  allowed_aws_principal_arns = [
+    "arn:aws:iam::139710491120:role/k9-auditor",
+    "arn:aws:iam::139710491120:user/ci",
+    "arn:aws:iam::139710491120:user/skuenzli",
+    "arn:aws:iam::139710491120:user/ssutton"
+  ]
+
+  allowed_api_actions = [
+    "s3:Get*",
+    "s3:Put*"
+  ]
+}
+
+module "bucket_with_declarative_policy" {
+  source = "../../../" //minimal integration test
+
+  logical_name = "${local.logical_name_declarative_policy}"
+  region       = "${var.region}"
+
+  policy = "${module.declarative_privilege_policy.policy_json}"
+
+  logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
+
+  org   = "${var.org}"
+  owner = "${var.owner}"
+  env   = "${var.env}"
+  app   = "${var.app}"
+
+  kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+}
+
+locals {
+  administrator_arns = [
+    "arn:aws:iam::139710491120:user/ci"
+    , "arn:aws:iam::139710491120:user/skuenzli"
+  ]
+
+  read_data_arns = [
+    "arn:aws:iam::139710491120:user/skuenzli"
+    , "arn:aws:iam::139710491120:user/ssutton"
+  ]
+
+  write_data_arns = "${local.read_data_arns}"
+
+  delete_data_arns = ["arn:aws:iam::139710491120:user/skuenzli"]
+}
+
+module "declarative_privilege_policy" {
+  source        = "../../../k9policy"
+  s3_bucket_arn = "${module.bucket_with_declarative_policy.s3.arn}"
+
+  allow_administer_resource = "${local.administrator_arns}"
+  allow_read_data           = "${local.read_data_arns}"
+  allow_write_data          = "${local.write_data_arns}"
+  # unused: allow_delete_data          = [] (default)
+  # unused: allow_use_resource         = [] (default)
+}
+
+resource "local_file" "declarative_privilege_policy" {
+  content  = "${module.declarative_privilege_policy.policy_json}"
+  filename = "${path.module}/declarative_privilege_policy.json"
+}
+
 variable "logical_name" {
   type = "string"
 }
@@ -124,11 +192,15 @@ output "module_under_test.bucket.id" {
 }
 
 output "module_under_test.custom_bucket.id" {
-  value = "${module.it_minimal_custom_policy.s3.id}"
+  value = "${module.bucket_with_custom_policy.s3.id}"
 }
 
 output "module_under_test.custom_bucket.policy" {
   value = "${data.template_file.my_custom_bucket_policy.rendered}"
+}
+
+output "module_under_test.least_privilege_policy.policy_json" {
+  value = "${module.least_privilege_policy.policy_json}"
 }
 
 output "kms_key.test.key_id" {
