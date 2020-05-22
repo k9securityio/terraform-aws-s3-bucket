@@ -7,9 +7,19 @@ variable "allow_administer_resource" {
   default = []
 }
 
+variable "allow_administer_resource_test" {
+  type    = "string"
+  default = "ArnEquals"
+}
+
 variable "allow_use_resource" {
   type    = "list"
   default = []
+}
+
+variable "allow_use_resource_test" {
+  type    = "string"
+  default = "ArnEquals"
 }
 
 variable "allow_read_data" {
@@ -17,14 +27,29 @@ variable "allow_read_data" {
   default = []
 }
 
+variable "allow_read_test" {
+  type    = "string"
+  default = "ArnEquals"
+}
+
 variable "allow_write_data" {
   type    = "list"
   default = []
 }
 
+variable "allow_write_test" {
+  type    = "string"
+  default = "ArnEquals"
+}
+
 variable "allow_delete_data" {
   type    = "list"
   default = []
+}
+
+variable "allow_delete_test" {
+  type    = "string"
+  default = "ArnEquals"
 }
 
 output "policy_json" {

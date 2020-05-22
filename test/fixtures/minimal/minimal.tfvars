@@ -2,7 +2,7 @@ logical_name = "testbucket"
 env          = "testenv"
 app          = "testapp"
 
-org   = "qm"
+org   = "k9"
 owner = "platform"
 
 region = "us-east-1"
