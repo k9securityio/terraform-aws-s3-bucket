@@ -19,7 +19,13 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["${var.allow_administer_resource}"]
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "${var.allow_administer_resource_test}"
+      values   = ["${var.allow_administer_resource}"]
+      variable = "aws:PrincipalArn"
     }
   }
 
@@ -36,7 +42,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       identifiers = ["*"]
     }
     condition {
-      test     = "ArnEquals"
+      test     = "${var.allow_read_test}"
       values   = ["${var.allow_read_data}"]
       variable = "aws:PrincipalArn"
     }
@@ -54,7 +60,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       identifiers = ["*"]
     }
     condition {
-      test     = "ArnEquals"
+      test     = "${var.allow_write_test}"
       values   = ["${var.allow_write_data}"]
       variable = "aws:PrincipalArn"
     }
@@ -73,7 +79,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       identifiers = ["*"]
     }
     condition {
-      test     = "ArnEquals"
+      test     = "${var.allow_delete_test}"
       values   = ["${var.allow_delete_data}"]
       variable = "aws:PrincipalArn"
     }
