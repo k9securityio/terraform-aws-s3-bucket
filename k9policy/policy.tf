@@ -53,6 +53,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     actions = "${local.actions_write_data}"
     resources = [
+      "${var.s3_bucket_arn}",
       "${var.s3_bucket_arn}/*",
     ]
     principals {
