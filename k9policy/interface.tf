@@ -15,17 +15,6 @@ variable "allow_administer_resource_test" {
   description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
-variable "allow_use_resource_arns" {
-  type    = "list"
-  default = []
-}
-
-variable "allow_use_resource_test" {
-  type        = "string"
-  default     = "ArnEquals"
-  description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
-}
-
 variable "allow_read_data_arns" {
   type        = "list"
   default     = []
