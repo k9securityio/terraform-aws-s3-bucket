@@ -44,14 +44,16 @@
             }
         },
         {
-            "Sid": "CustomPermitOnlyRolesWithinAccount",
+            "Sid": "AllowReadsFromEntireAccount",
             "Effect": "Allow",
             "Principal": {
                 "AWS": "${current_account_id}"
             },
-            "Action": "*",
+            "Action": "s3:Get*",
             "Resource": [
-                "${aws_s3_bucket_arn}"
+                "${aws_s3_bucket_arn}",
+                "${aws_s3_bucket_arn}/*"
+
             ]
         }
     ]

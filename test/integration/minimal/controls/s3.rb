@@ -40,10 +40,10 @@ control 's3' do
     subject { s3_bucket(actual_custom_s3_id) }
 
     its('policy.policy.read') { 
-      should match /DenyInsecureCommunications/
-      should match /DenyIncorrectEncryptionHeader/
-      should match /DenyUnencryptedObjectUploads/
-      should match /DenyEveryoneElse/
+      should match /CustomDenyInsecureCommunications/
+      should match /CustomDenyIncorrectEncryptionHeader/
+      should match /CustomDenyUnencryptedObjectUploads/
+      should match /AllowReadsFromEntireAccount/
     }
   end
 

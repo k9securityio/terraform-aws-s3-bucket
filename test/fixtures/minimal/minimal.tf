@@ -37,7 +37,7 @@ locals {
   logical_name_declarative_policy = "${var.logical_name}-declarative-policy-${random_id.testing_suffix.hex}"
 }
 
-data "template_file" "my_custom_bucket_policy" {
+data "template_file" "custom_bucket_policy" {
   template = "${file("${path.module}/custom_bucket_policy.json")}"
 
   vars = {
@@ -52,7 +52,7 @@ module "bucket_with_custom_policy" {
   logical_name = "${local.logical_name_custom_policy}"
   region       = "${var.region}"
 
-  policy = "${module.custom_policy.policy_json}"
+  policy = "${data.template_file.custom_bucket_policy.rendered}"
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
@@ -96,22 +96,7 @@ resource "aws_s3_bucket_object" "test" {
   kms_key_id = "${aws_kms_alias.test.target_key_arn}"
 }
 
-module "custom_policy" {
-  source        = "../../../policy"
-  s3_bucket_arn = "${module.bucket_with_custom_policy.s3.arn}"
 
-  allowed_aws_principal_arns = [
-    "arn:aws:iam::139710491120:role/k9-auditor",
-    "arn:aws:iam::139710491120:user/ci",
-    "arn:aws:iam::139710491120:user/skuenzli",
-    "arn:aws:iam::139710491120:user/ssutton"
-  ]
-
-  allowed_api_actions = [
-    "s3:Get*",
-    "s3:Put*"
-  ]
-}
 
 module "bucket_with_declarative_policy" {
   source = "../../../" //minimal integration test
@@ -200,11 +185,11 @@ output "module_under_test.bucket_with_declarative_policy.id" {
 }
 
 output "module_under_test.custom_bucket.policy" {
-  value = "${data.template_file.my_custom_bucket_policy.rendered}"
+  value = "${data.template_file.custom_bucket_policy.rendered}"
 }
 
 output "module_under_test.least_privilege_policy.policy_json" {
-  value = "${module.custom_policy.policy_json}"
+  value = "${data.template_file.custom_bucket_policy.rendered}"
 }
 
 output "module_under_test.declarative_privilege_policy.policy_json" {
