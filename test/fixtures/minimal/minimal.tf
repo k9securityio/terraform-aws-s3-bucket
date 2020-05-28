@@ -151,9 +151,9 @@ module "declarative_privilege_policy" {
   source        = "../../../k9policy"
   s3_bucket_arn = "${module.bucket_with_declarative_policy.s3.arn}"
 
-  allow_administer_resource = "${local.administrator_arns}"
-  allow_read_data           = "${local.read_data_arns}"
-  allow_write_data          = "${local.write_data_arns}"
+  allow_administer_resource_arns = "${local.administrator_arns}"
+  allow_read_data_arns           = "${local.read_data_arns}"
+  allow_write_data               = "${local.write_data_arns}"
   # unused: allow_delete_data          = [] (default)
   # unused: allow_use_resource         = [] (default)
 }

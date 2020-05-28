@@ -1,11 +1,11 @@
 locals {
   # future work: retrieve action mappings from k9 api
-  actions_administer_resource_all = ["s3:*"]
+  actions_administer_resource_all    = ["s3:*"]
   actions_administer_resource_bucket = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.administer-resource.bucket.tsv")))))}"
-  actions_use_resource        = []
-  actions_read_data           = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.read-data.tsv")))))}"
-  actions_write_data          = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.write-data.tsv")))))}"
-  actions_delete_data         = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.delete-data.tsv")))))}"
+  actions_use_resource               = []
+  actions_read_data                  = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.read-data.tsv")))))}"
+  actions_write_data                 = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.write-data.tsv")))))}"
+  actions_delete_data                = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.delete-data.tsv")))))}"
 }
 
 data "aws_iam_policy_document" "bucket_policy" {
@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     condition {
       test     = "${var.allow_administer_resource_test}"
-      values   = ["${var.allow_administer_resource}"]
+      values   = ["${var.allow_administer_resource_arns}"]
       variable = "aws:PrincipalArn"
     }
   }
@@ -41,8 +41,8 @@ data "aws_iam_policy_document" "bucket_policy" {
       identifiers = ["*"]
     }
     condition {
-      test     = "${var.allow_read_test}"
-      values   = ["${var.allow_read_data}"]
+      test     = "${var.allow_read_data_test}"
+      values   = ["${var.allow_read_data_arns}"]
       variable = "aws:PrincipalArn"
     }
   }
@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       identifiers = ["*"]
     }
     condition {
-      test     = "${var.allow_write_test}"
+      test     = "${var.allow_write_data_test}"
       values   = ["${var.allow_write_data}"]
       variable = "aws:PrincipalArn"
     }
@@ -79,8 +79,8 @@ data "aws_iam_policy_document" "bucket_policy" {
       identifiers = ["*"]
     }
     condition {
-      test     = "${var.allow_delete_test}"
-      values   = ["${var.allow_delete_data}"]
+      test     = "${var.allow_delete_data_test}"
+      values   = ["${var.allow_delete_data_arns}"]
       variable = "aws:PrincipalArn"
     }
   }
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
     condition {
       test     = "ArnNotEquals"
-      values   = ["${distinct(concat(var.allow_administer_resource, var.allow_read_data, var.allow_write_data, var.allow_delete_data))}"]
+      values   = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data, var.allow_delete_data_arns))}"]
       variable = "aws:PrincipalArn"
     }
   }

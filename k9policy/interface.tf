@@ -1,55 +1,65 @@
 variable "s3_bucket_arn" {
-  type = "string"
+  type        = "string"
+  description = "The ARN of the bucket this policy protects, e.g. arn:aws:s3:::some-bucket-name"
 }
 
-variable "allow_administer_resource" {
-  type    = "list"
-  default = []
+variable "allow_administer_resource_arns" {
+  type        = "list"
+  default     = []
+  description = "The list of fully-qualified AWS IAM ARNs authorized to administer this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-*"
 }
 
 variable "allow_administer_resource_test" {
-  type    = "string"
-  default = "ArnEquals"
+  type        = "string"
+  default     = "ArnEquals"
+  description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
-variable "allow_use_resource" {
+variable "allow_use_resource_arns" {
   type    = "list"
   default = []
 }
 
 variable "allow_use_resource_test" {
-  type    = "string"
-  default = "ArnEquals"
+  type        = "string"
+  default     = "ArnEquals"
+  description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
-variable "allow_read_data" {
-  type    = "list"
-  default = []
+variable "allow_read_data_arns" {
+  type        = "list"
+  default     = []
+  description = "The list of fully-qualified AWS IAM ARNs authorized to read data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-*"
 }
 
-variable "allow_read_test" {
-  type    = "string"
-  default = "ArnEquals"
+variable "allow_read_data_test" {
+  type        = "string"
+  default     = "ArnEquals"
+  description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
 variable "allow_write_data" {
-  type    = "list"
-  default = []
+  type        = "list"
+  default     = []
+  description = "The list of fully-qualified AWS IAM ARNs authorized to write data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-*"
 }
 
-variable "allow_write_test" {
-  type    = "string"
-  default = "ArnEquals"
+variable "allow_write_data_test" {
+  type        = "string"
+  default     = "ArnEquals"
+  description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
-variable "allow_delete_data" {
-  type    = "list"
-  default = []
+variable "allow_delete_data_arns" {
+  type        = "list"
+  default     = []
+  description = "The list of fully-qualified AWS IAM ARNs authorized to delete data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-*"
 }
 
-variable "allow_delete_test" {
-  type    = "string"
-  default = "ArnEquals"
+variable "allow_delete_data_test" {
+  type        = "string"
+  default     = "ArnEquals"
+  description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
 output "policy_json" {
