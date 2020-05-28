@@ -52,7 +52,7 @@ module "bucket_with_custom_policy" {
   logical_name = "${local.logical_name_custom_policy}"
   region       = "${var.region}"
 
-  policy = "${module.least_privilege_policy.policy_json}"
+  policy = "${module.custom_policy.policy_json}"
 
   logging_target_bucket = "${aws_s3_bucket.log_bucket.id}"
 
@@ -96,7 +96,7 @@ resource "aws_s3_bucket_object" "test" {
   kms_key_id = "${aws_kms_alias.test.target_key_arn}"
 }
 
-module "least_privilege_policy" {
+module "custom_policy" {
   source        = "../../../policy"
   s3_bucket_arn = "${module.bucket_with_custom_policy.s3.arn}"
 
@@ -200,7 +200,7 @@ output "module_under_test.custom_bucket.policy" {
 }
 
 output "module_under_test.least_privilege_policy.policy_json" {
-  value = "${module.least_privilege_policy.policy_json}"
+  value = "${module.custom_policy.policy_json}"
 }
 
 output "kms_key.test.key_id" {
