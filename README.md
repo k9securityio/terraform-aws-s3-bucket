@@ -42,7 +42,7 @@ module "s3_bucket" {
 That module instantiation should look straightforward except for perhaps the policy attribute.
 
 This s3 bucket module accepts a bucket policy.  You can generate a least privilege bucket policy using the 
-policy submodule.
+`k9policy` submodule.
 
 First, define who will have access to the bucket as lists of AWS principal ARNS: 
 ```hcl-terraform
