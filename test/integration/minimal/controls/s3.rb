@@ -10,12 +10,11 @@ expect_env = "testenv"
 expect_app = "testapp"
 expect_owner = "platform"
 
-actual_s3_id = attribute 'module_under_test.bucket.id', {}
-actual_custom_s3_id = attribute 'module_under_test.custom_bucket.id', {}
-actual_declarative_s3_id = attribute 'module_under_test.bucket_with_declarative_policy.id', {}
+actual_s3_id = attribute 'module_under_test-bucket-id', {}
+actual_custom_s3_id = attribute 'module_under_test-custom_bucket-id', {}
+actual_declarative_s3_id = attribute 'module_under_test-bucket_with_declarative_policy-id', {}
 
-all_managed_buckets = [actual_custom_s3_id, actual_custom_s3_id, actual_declarative_s3_id]
-custom_bucket_policy = attribute 'module_under_test.custom_bucket.policy', {}
+all_managed_buckets = [actual_s3_id, actual_custom_s3_id, actual_declarative_s3_id]
 
 #require 'pry'; binding.pry; #uncomment to jump into the debugger
 

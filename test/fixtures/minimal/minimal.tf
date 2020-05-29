@@ -86,7 +86,7 @@ resource "aws_kms_alias" "test" {
 }
 
 resource "aws_s3_bucket_object" "test" {
-  bucket = "${module.it_minimal.s3.id}"
+  bucket = "${module.it_minimal.bucket_id}"
   key    = "an/object/key"
 
   content_type = "application/json"
@@ -134,7 +134,7 @@ locals {
 
 module "declarative_privilege_policy" {
   source        = "../../../k9policy"
-  s3_bucket_arn = "${module.bucket_with_declarative_policy.s3.arn}"
+  s3_bucket_arn = "${module.bucket_with_declarative_policy.bucket_arn}"
 
   allow_administer_resource_arns = "${local.administrator_arns}"
   allow_read_data_arns           = "${local.read_data_arns}"
@@ -172,30 +172,30 @@ variable "app" {
   type = "string"
 }
 
-output "module_under_test.bucket.id" {
-  value = "${module.it_minimal.s3.id}"
+output "module_under_test-bucket-id" {
+  value = "${module.it_minimal.bucket_id}"
 }
 
-output "module_under_test.custom_bucket.id" {
-  value = "${module.bucket_with_custom_policy.s3.id}"
+output "module_under_test-custom_bucket-id" {
+  value = "${module.bucket_with_custom_policy.bucket_id}"
 }
 
-output "module_under_test.bucket_with_declarative_policy.id" {
-  value = "${module.bucket_with_declarative_policy.s3.id}"
+output "module_under_test-bucket_with_declarative_policy-id" {
+  value = "${module.bucket_with_declarative_policy.bucket_id}"
 }
 
-output "module_under_test.custom_bucket.policy" {
+output "module_under_test-custom_bucket-policy" {
   value = "${data.template_file.custom_bucket_policy.rendered}"
 }
 
-output "module_under_test.least_privilege_policy.policy_json" {
+output "module_under_test-least_privilege_policy-policy_json" {
   value = "${data.template_file.custom_bucket_policy.rendered}"
 }
 
-output "module_under_test.declarative_privilege_policy.policy_json" {
+output "module_under_test-declarative_privilege_policy-policy_json" {
   value = "${module.declarative_privilege_policy.policy_json}"
 }
 
-output "kms_key.test.key_id" {
+output "kms_key-test-key_id" {
   value = "${aws_kms_key.test.key_id}"
 }

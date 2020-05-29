@@ -89,14 +89,14 @@ variable "restrict_public_buckets" {
   default = "true"
 }
 
-output "s3.id" {
+output "bucket_id" {
   value = "${aws_s3_bucket.bucket.id}"
 }
 
-output "s3.arn" {
+output "bucket_arn" {
   value = "${aws_s3_bucket.bucket.arn}"
 }
 
-output "s3.bucket_domain_name" {
+output "bucket_domain_name" {
   value = "${aws_s3_bucket.bucket.bucket_domain_name}"
 }
