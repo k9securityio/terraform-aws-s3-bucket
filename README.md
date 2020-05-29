@@ -1,10 +1,91 @@
-# Generic Terraform S3 module #
+# Terraform S3 bucket and policy module #
 
-tf_s3_bucket provides an s3 bucket configured with safe defaults and tagging.
+k9 Security's tf_s3_bucket helps you protect your data by creating an s3 bucket with safe defaults and a 
+least-privilege bucket policy built on the 
+[k9 access capability model](https://k9security.io/docs/k9-access-capability-model/).
 
-The metadata specified via variables will be used to construct a namespaced bucket name, apply appropriate tags, and configuree access logging.
+Specify context about your use case, including intended access the module and will:
 
-[![CircleCI](https://circleci.com/gh/qualimente/tf_s3_bucket.svg?style=svg)](https://circleci.com/gh/qualimente/tf_s3_bucket)
+* create a bucket named using your context
+* generate a least privilege bucket policy
+* configure encryption
+* apply appropriate tags
+* configure access logging
+* and more
+
+[![CircleCI](https://circleci.com/gh/k9securityio/tf_s3_bucket.svg?style=svg)](https://circleci.com/gh/k9securityio/tf_s3_bucket)
+
+## Usage
+The root of this repository contains a Terraform module that manages an AWS S3 bucket.
+
+A simple instantiation of that module like this:
+```hcl-terraform
+module "s3_bucket" {
+  source = "git@github.com:k9securityio/tf_s3_bucket.git"
+  
+  # the logical name for the use case, e.g. docs, reports, media, backups 
+  logical_name = "docs"
+  # the region to create the bucket in
+  region       = "us-east-1"
+
+  logging_target_bucket = "name of the bucket to log to, e.g. my-logs-bucket"
+
+  org   = "someorg"
+  owner = "someowner"
+  env   = "dev"
+  app   = "someapi"
+
+  policy = "${module.least_privilege_bucket_policy.policy_json}"
+}
+```
+
+That module instantiation should look straightforward except for perhaps the policy attribute.
+
+This s3 bucket module accepts a bucket policy.  You can generate a least privilege bucket policy using the 
+policy submodule.
+
+First, define who will have access to the bucket as lists of AWS principal ARNS: 
+```hcl-terraform
+# Define which principals may access the bucket and what capabilities they have
+# The access capabilities are defined at https://k9security.io/docs/k9-access-capability-model/  
+locals {
+  administrator_arns = [
+    "arn:aws:iam::12345678910:user/ci"
+    , "arn:aws:iam::12345678910:user/person1"
+  ]
+
+  read_data_arns = [
+    "arn:aws:iam::12345678910:user/person1",
+    "arn:aws:iam::12345678910:role/appA",
+  ]
+
+  write_data_arns = "${local.read_data_arns}"
+}
+```
+
+Then, instantiate the `k9policy` module:
+
+```hcl-terraform
+module "least_privilege_bucket_policy" {
+  source        = "git@github.com:k9securityio/tf_s3_bucket.git//k9policy"
+  s3_bucket_arn = "${module.s3_bucket.bucket_arn}"
+
+  allow_administer_resource_arns = "${local.administrator_arns}"
+  allow_read_data_arns           = "${local.read_data_arns}"
+  allow_write_data               = "${local.write_data_arns}"
+  # unused: allow_delete_data          = [] (default)
+  # unused: allow_use_resource         = [] (default)
+}
+```
+
+This code enables the following access:
+
+* allow `ci` and `person1` users to administer the bucket
+* allow `person1` user and `appA` role to read and write data from the bucket
+* deny all other access; this is the tricky bit! 
+
+See the 'minimal' test fixture at [test/fixtures/minimal/minimal.tf](test/fixtures/minimal/minimal.tf) for complete 
+examples of how to use these S3 bucket and policy modules.  
 
 ## Local Development and Testing
 
