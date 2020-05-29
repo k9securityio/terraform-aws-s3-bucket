@@ -1,5 +1,12 @@
 version: 2
 
+workflows:
+  version: 2
+  build:
+    jobs: [
+    {'build': {'context': 'k9-dev-ci'}}
+    ]
+
 terraform: &terraform
   docker:
     - image: qualimente/terraform-infra-dev:0.11

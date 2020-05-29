@@ -55,10 +55,20 @@ data "template_file" "default_access_policy" {
   }
 }
 
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+
+  depends_on = ["aws_s3_bucket.bucket"]
+}
+
 resource "aws_s3_bucket_policy" "bucket" {
   bucket = "${aws_s3_bucket.bucket.id}"
 
   policy = "${local.policy}"
+  
+  depends_on = ["null_resource.delay"]
 }
 
 resource "aws_s3_bucket_public_access_block" "example" {
@@ -69,4 +79,5 @@ resource "aws_s3_bucket_public_access_block" "example" {
   ignore_public_acls      = "${var.ignore_public_acls}"
   restrict_public_buckets = "${var.restrict_public_buckets}"
 
+  depends_on = ["aws_s3_bucket_policy.bucket"]
 }

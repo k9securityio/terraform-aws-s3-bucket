@@ -4,7 +4,7 @@ require 'rspec/expectations'
 require_relative 'spec_helper'
 
 
-actual_test_kms_key_id = attribute 'kms_key.test.key_id', {}
+actual_test_kms_key_id = attribute 'kms_key-test-key_id', {}
 
 #require 'pry'; binding.pry; #uncomment to jump into the debugger
 
@@ -16,7 +16,7 @@ tf_state_json = json("/module/terraform.tfstate.d/kitchen-terraform-minimal-aws/
 logical_name = "testbucket"
 env = "testenv"
 app = "testapp"
-org = "qm"
+org = "k9"
 owner = "platform"
 region = "us-east-1"
 
@@ -40,16 +40,16 @@ control 'terraform_state' do
     # describe outputs
     describe 'outputs' do
       describe('s3 bucket') do
-        describe('id') do
-          subject { outputs['s3.id']['value'] }
+        describe('bucket_id') do
+          subject { outputs['bucket_id']['value'] }
           it { is_expected.to match(/#{expected_bucket_name_base}-[\w]+/) }
         end
-        describe('arn') do
-          subject { outputs['s3.arn']['value'] }
+        describe('bucket_arn') do
+          subject { outputs['bucket_arn']['value'] }
           it { is_expected.to match(/arn:aws:s3:::#{expected_bucket_name_base}-[\w]+/) }
         end
         describe('bucket_domain_name') do
-          subject { outputs['s3.bucket_domain_name']['value'] }
+          subject { outputs['bucket_domain_name']['value'] }
           it { is_expected.to match(/#{expected_bucket_name_base}-[\w]+\.s3\.amazonaws\.com/) }
         end
       end
@@ -62,7 +62,7 @@ control 'terraform_state' do
 
         describe('id') do
           subject { bucket['id'] }
-          it { is_expected.to eq(outputs['s3.id']['value']) }
+          it { is_expected.to eq(outputs['bucket_id']['value']) }
         end
 
         describe('bucket') do
