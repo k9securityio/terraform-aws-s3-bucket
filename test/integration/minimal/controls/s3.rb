@@ -25,7 +25,15 @@ control 's3' do
     all_managed_buckets.each do | bucket_id |
       describe s3_bucket(bucket_id) do
         it { should exist }
+
+        its('resource.acl.owner.display_name') { should eq 'skuenzli+qm-sandbox' }
+        its(:acl_grants_count) { should eq 1 }
+        it { should have_acl_grant(grantee: 'skuenzli+qm-sandbox', permission: 'FULL_CONTROL') }
+
         it { should have_versioning_enabled }
+
+        # upgrade: it { should have_server_side_encryption(algorithm: "aws:kms") }
+
         it { should_not have_mfa_delete_enabled }
 
         it { should have_logging_enabled(target_prefix: "log/s3/#{bucket_id}/") }
