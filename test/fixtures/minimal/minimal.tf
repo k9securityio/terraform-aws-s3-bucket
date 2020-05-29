@@ -145,7 +145,7 @@ module "declarative_privilege_policy" {
 
 resource "local_file" "declarative_privilege_policy" {
   content  = "${module.declarative_privilege_policy.policy_json}"
-  filename = "${path.module}/declarative_privilege_policy.json"
+  filename = "${path.module}/generated/declarative_privilege_policy.json"
 }
 
 variable "logical_name" {
