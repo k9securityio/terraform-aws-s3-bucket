@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
     condition {
       test     = "${var.allow_write_data_test}"
-      values   = ["${var.allow_write_data}"]
+      values   = ["${var.allow_write_data_arns}"]
       variable = "aws:PrincipalArn"
     }
 
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
     condition {
       test     = "ArnNotEquals"
-      values   = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data, var.allow_delete_data_arns))}"]
+      values   = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data_arns, var.allow_delete_data_arns))}"]
       variable = "aws:PrincipalArn"
     }
   }
