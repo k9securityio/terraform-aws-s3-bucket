@@ -18,33 +18,19 @@ Specify context about your use case, including intended access the module and wi
 ## Usage
 The root of this repository contains a Terraform module that manages an AWS S3 bucket.
 
-A simple instantiation of that module like this:
-```hcl-terraform
-module "s3_bucket" {
-  source = "git@github.com:k9securityio/tf_s3_bucket.git"
-  
-  # the logical name for the use case, e.g. docs, reports, media, backups 
-  logical_name = "docs"
-  # the region to create the bucket in
-  region       = "us-east-1"
+The k9 S3 bucket module allows you to define who should have access to the bucket in terms of k9's 
+[access capability model](https://k9security.io/docs/k9-access-capability-model/).  Instead of 
+writing a least privilege access policy directly in terms of API actions like `s3:GetObject`, you declare
+who should be able to `read-data`.  This module supports the following access capabilities:
 
-  logging_target_bucket = "name of the bucket to log to, e.g. my-logs-bucket"
+* `administer-resource`
+* `read-data`
+* `write-data`
+* `delete-data`   
 
-  org   = "someorg"
-  owner = "someowner"
-  env   = "dev"
-  app   = "someapi"
-
-  policy = "${module.least_privilege_bucket_policy.policy_json}"
-}
-```
-
-That module instantiation should look straightforward except for perhaps the policy attribute.
-
-This s3 bucket module accepts a bucket policy.  You can generate a least privilege bucket policy using the 
-`k9policy` submodule.
-
-First, define who will have access to the bucket as lists of AWS principal ARNS: 
+First, define who should access to the bucket as lists of AWS principal ARNS.  Using `locals` can help
+you document intent, keep lists synchronized, and reduce duplication.   
+ 
 ```hcl-terraform
 # Define which principals may access the bucket and what capabilities they have
 # The access capabilities are defined at https://k9security.io/docs/k9-access-capability-model/  
@@ -63,7 +49,46 @@ locals {
 }
 ```
 
-Then, instantiate the `k9policy` module:
+Now instantiate the module with a definition like this:
+```hcl-terraform
+module "s3_bucket" {
+  source = "git@github.com:k9securityio/tf_s3_bucket.git"
+  
+  # the logical name for the use case, e.g. docs, reports, media, backups 
+  logical_name = "docs"
+  # the region to create the bucket in
+  region       = "us-east-1"
+
+  logging_target_bucket = "name of the bucket to log to, e.g. my-logs-bucket"
+
+  org   = "someorg"
+  owner = "someowner"
+  env   = "dev"
+  app   = "someapi"
+
+  allow_administer_resource_arns = "${local.administrator_arns}"
+  allow_read_data_arns           = "${local.read_data_arns}"
+  allow_write_data_arns          = "${local.write_data_arns}"
+}
+```
+
+This code enables the following access:
+
+* allow `ci` and `person1` users to administer the bucket
+* allow `person1` user and `appA` role to read and write data from the bucket
+* deny all other access; this is the tricky bit! 
+
+We hope that module instantiation is easy to understand and conveys your intent.  If you think this can be improved,
+we would love your feedback as a pull request with a question, clarification, or alternative.
+
+Alternatively, you can create your own S3 bucket policy and provide it to the module using the `policy` attribute.  
+
+### Use the `k9policy` submodule directly 
+
+You can also generate a least privilege bucket policy using the `k9policy` submodule directly.  This enables you to
+use a k9 bucket policy with another Terraform module or infrastructure code. 
+
+Instantiate the `k9policy` module directly:
 
 ```hcl-terraform
 module "least_privilege_bucket_policy" {
@@ -77,12 +102,6 @@ module "least_privilege_bucket_policy" {
   # unused: allow_use_resource         = [] (default)
 }
 ```
-
-This code enables the following access:
-
-* allow `ci` and `person1` users to administer the bucket
-* allow `person1` user and `appA` role to read and write data from the bucket
-* deny all other access; this is the tricky bit! 
 
 See the 'minimal' test fixture at [test/fixtures/minimal/minimal.tf](test/fixtures/minimal/minimal.tf) for complete 
 examples of how to use these S3 bucket and policy modules.  
