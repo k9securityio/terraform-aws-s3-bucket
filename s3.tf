@@ -2,6 +2,7 @@ locals {
   bucket_name = "${var.org}-${var.env}-${var.logical_name}"
   bucket_arn  = "arn:aws:s3:::${local.bucket_name}"
 }
+
 resource "aws_s3_bucket" "bucket" {
   bucket = "${local.bucket_name}"
 

@@ -13,9 +13,11 @@ data "aws_iam_policy_document" "bucket_policy" {
     sid = "AllowRestrictedAdministerResource"
 
     actions = "${local.actions_administer_resource_bucket}"
+
     resources = [
       "${var.s3_bucket_arn}",
     ]
+
     principals {
       type        = "AWS"
       identifiers = ["*"]
@@ -32,14 +34,17 @@ data "aws_iam_policy_document" "bucket_policy" {
     sid = "AllowRestrictedReadData"
 
     actions = "${local.actions_read_data}"
+
     resources = [
       "${var.s3_bucket_arn}",
       "${var.s3_bucket_arn}/*",
     ]
+
     principals {
       type        = "AWS"
       identifiers = ["*"]
     }
+
     condition {
       test     = "${var.allow_read_data_test}"
       values   = ["${var.allow_read_data_arns}"]
@@ -51,33 +56,38 @@ data "aws_iam_policy_document" "bucket_policy" {
     sid = "AllowRestrictedWriteData"
 
     actions = "${local.actions_write_data}"
+
     resources = [
       "${var.s3_bucket_arn}",
       "${var.s3_bucket_arn}/*",
     ]
+
     principals {
       type        = "AWS"
       identifiers = ["*"]
     }
+
     condition {
       test     = "${var.allow_write_data_test}"
       values   = ["${var.allow_write_data_arns}"]
       variable = "aws:PrincipalArn"
     }
-
   }
 
   statement {
     sid = "AllowRestrictedDeleteData"
 
     actions = "${local.actions_delete_data}"
+
     resources = [
-      "${var.s3_bucket_arn}/*"
+      "${var.s3_bucket_arn}/*",
     ]
+
     principals {
       type        = "AWS"
       identifiers = ["*"]
     }
+
     condition {
       test     = "${var.allow_delete_data_test}"
       values   = ["${var.allow_delete_data_arns}"]
@@ -91,19 +101,21 @@ data "aws_iam_policy_document" "bucket_policy" {
     effect = "Deny"
 
     actions = ["s3:*"]
+
     resources = [
       "${var.s3_bucket_arn}",
-      "${var.s3_bucket_arn}/*"
+      "${var.s3_bucket_arn}/*",
     ]
+
     principals {
       type        = "AWS"
       identifiers = ["*"]
     }
+
     condition {
       test     = "ArnNotEquals"
       values   = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data_arns, var.allow_delete_data_arns))}"]
       variable = "aws:PrincipalArn"
     }
   }
-
 }
