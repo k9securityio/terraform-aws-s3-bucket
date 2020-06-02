@@ -1,10 +1,10 @@
 # Terraform S3 bucket and policy module #
 
-k9 Security's tf_s3_bucket helps you protect your data by creating an s3 bucket with safe defaults and a 
+k9 Security's tf_s3_bucket helps you protect data by creating an AWS S3 bucket with safe defaults and a 
 least-privilege bucket policy built on the 
 [k9 access capability model](https://k9security.io/docs/k9-access-capability-model/).
 
-Specify context about your use case, including intended access the module and will:
+Specify context about your use case and intended access, then the module will:
 
 * create a bucket named using your context
 * generate a least privilege bucket policy
@@ -28,12 +28,14 @@ who should be able to `read-data`.  This module supports the following access ca
 * `write-data`
 * `delete-data`   
 
-First, define who should access to the bucket as lists of AWS principal ARNS.  Using `locals` can help
-you document intent, keep lists synchronized, and reduce duplication.   
+First, define who should access to the bucket as lists of 
+[AWS principal IDs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html).  
+The most common principals you will use are AWS IAM user and role ARNs such as `arn:aws:iam::12345678910:role/appA`.  
+Consider using `locals` to help document intent, keep lists synchronized, and reduce duplication.   
  
 ```hcl-terraform
-# Define which principals may access the bucket and what capabilities they have
-# The access capabilities are defined at https://k9security.io/docs/k9-access-capability-model/  
+# Define which principals may access the bucket and what capabilities they should have
+# k9 access capabilities are defined at https://k9security.io/docs/k9-access-capability-model/  
 locals {
   administrator_arns = [
     "arn:aws:iam::12345678910:user/ci"
@@ -81,17 +83,19 @@ This code enables the following access:
 You can see the policy this configuration generates in 
 [examples/generated.least_privilege_policy.json](examples/generated.least_privilege_policy.json). 
 
-We hope that module instantiation is easy to understand and conveys your intent.  If you think this can be improved,
+We hope that module instantiation is easy to understand and conveys intent.  If you think this can be improved,
 we would love your feedback as a pull request with a question, clarification, or alternative.
 
-Alternatively, you can create your own S3 bucket policy and provide it to the module using the `policy` attribute.  
+### Use s3 module with your own policy
+
+Alternatively, you can create your own S3 bucket policy and provide it to the module using the `policy` attribute.   
 
 ### Use the `k9policy` submodule directly 
 
 You can also generate a least privilege bucket policy using the `k9policy` submodule directly.  This enables you to
-use a k9 bucket policy with another Terraform module or infrastructure code. 
+use a k9 bucket policy with another Terraform module. 
 
-Instantiate the `k9policy` module directly:
+Instantiate the `k9policy` module directly like this:
 
 ```hcl-terraform
 module "least_privilege_bucket_policy" {
@@ -105,6 +109,8 @@ module "least_privilege_bucket_policy" {
   # unused: allow_use_resource         = [] (default)
 }
 ```
+
+### Examples
 
 See the 'minimal' test fixture at [test/fixtures/minimal/minimal.tf](test/fixtures/minimal/minimal.tf) for complete 
 examples of how to use these S3 bucket and policy modules.  
