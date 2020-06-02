@@ -136,8 +136,50 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     condition {
       test = "Bool"
-      values = ["false"]
       variable = "aws:SecureTransport"
+      values = ["false"]
+    }
+  }
+
+  statement {
+    sid = "DenyUnencryptedStorage"
+    effect = "Deny"
+    actions = ["s3:PutObject"]
+
+    resources = [
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test = "Null"
+      variable = "s3:x-amz-server-side-encryption"
+      values = ["true"]
+    }
+  }
+  
+  statement {
+    sid = "DenyStorageWithoutKMSEncyrption"
+    effect = "Deny"
+    actions = ["s3:PutObject"]
+
+    resources = [
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values = ["aws:kms"]
     }
   }
 }
