@@ -28,6 +28,12 @@ module "it_minimal" {
   app   = "${var.app}"
 
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+
+  allow_administer_resource_arns = "${local.administrator_arns}"
+  allow_read_data_arns           = "${local.read_data_arns}"
+  allow_write_data_arns          = "${local.write_data_arns}"
+
+  # unused: allow_delete_data_arns          = [] (default)
 }
 
 data "aws_caller_identity" "current" {}
@@ -96,8 +102,6 @@ resource "aws_s3_bucket_object" "test" {
   kms_key_id = "${aws_kms_alias.test.target_key_arn}"
 }
 
-
-
 module "bucket_with_declarative_policy" {
   source = "../../../" //minimal integration test
 
@@ -118,13 +122,13 @@ module "bucket_with_declarative_policy" {
 
 locals {
   administrator_arns = [
-    "arn:aws:iam::139710491120:user/ci"
-    , "arn:aws:iam::139710491120:user/skuenzli"
+    "arn:aws:iam::139710491120:user/ci",
+    "arn:aws:iam::139710491120:user/skuenzli",
   ]
 
   read_data_arns = [
-    "arn:aws:iam::139710491120:user/skuenzli"
-    , "arn:aws:iam::139710491120:user/ssutton"
+    "arn:aws:iam::139710491120:user/skuenzli",
+    "arn:aws:iam::139710491120:user/ssutton",
   ]
 
   write_data_arns = "${local.read_data_arns}"
@@ -138,7 +142,8 @@ module "declarative_privilege_policy" {
 
   allow_administer_resource_arns = "${local.administrator_arns}"
   allow_read_data_arns           = "${local.read_data_arns}"
-  allow_write_data               = "${local.write_data_arns}"
+  allow_write_data_arns          = "${local.write_data_arns}"
+
   # unused: allow_delete_data          = [] (default)
   # unused: allow_use_resource         = [] (default)
 }

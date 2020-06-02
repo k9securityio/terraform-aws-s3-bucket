@@ -51,6 +51,9 @@ define execute
 	fi;
 endef
 
+clean:
+	rm -rf .terraform .kitchen terraform.tfstate.d
+
 shell:
 	@$(call execute,sh,)
 
@@ -67,6 +70,7 @@ format:
 	@$(call terraform,fmt)
 
 lint:
+	@$(call terraform,get)
 	@$(call tflint,)
 
 converge:
@@ -88,7 +92,7 @@ docs:
 	@$(call terraform-docs,markdown interface.tf > interface.md)
 	@$(call terraform-docs,markdown k9policy/interface.tf > k9policy/interface.md)
 
-all: deps init format lint converge verify docs
+all: deps init format converge verify docs
 
 circleci-build:
 	@circleci build \

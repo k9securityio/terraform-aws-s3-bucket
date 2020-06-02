@@ -1,5 +1,10 @@
+locals {
+  bucket_name = "${var.org}-${var.env}-${var.logical_name}"
+  bucket_arn  = "arn:aws:s3:::${local.bucket_name}"
+}
+
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${var.org}-${var.env}-${var.logical_name}"
+  bucket = "${local.bucket_name}"
 
   region = "${var.region}"
 
@@ -37,7 +42,7 @@ resource "aws_s3_bucket" "bucket" {
 locals {
   use_custom_policy = "${length(var.policy) > 0}"
 
-  policy = "${local.use_custom_policy ? var.policy : data.template_file.default_access_policy.rendered}"
+  policy = "${local.use_custom_policy ? var.policy : module.bucket_policy.policy_json}"
 }
 
 data "aws_caller_identity" "current" {}
@@ -46,13 +51,22 @@ output "account_id" {
   value = "${data.aws_caller_identity.current.account_id}"
 }
 
-data "template_file" "default_access_policy" {
-  template = "${file("${path.module}/secure-by-default.json")}"
+module "bucket_policy" {
+  source = "k9policy"
 
-  vars = {
-    aws_s3_bucket_arn  = "${aws_s3_bucket.bucket.arn}"
-    current_account_id = "${data.aws_caller_identity.current.account_id}"
-  }
+  s3_bucket_arn = "${local.bucket_arn}"
+
+  allow_administer_resource_arns = "${var.allow_administer_resource_arns}"
+  allow_administer_resource_test = "${var.allow_administer_resource_test}"
+
+  allow_read_data_arns = "${var.allow_read_data_arns}"
+  allow_read_data_test = "${var.allow_read_data_test}"
+
+  allow_write_data_arns = "${var.allow_write_data_arns}"
+  allow_write_data_test = "${var.allow_write_data_test}"
+
+  allow_delete_data_arns = "${var.allow_delete_data_arns}"
+  allow_delete_data_test = "${var.allow_delete_data_test}"
 }
 
 resource "null_resource" "delay" {
@@ -67,7 +81,7 @@ resource "aws_s3_bucket_policy" "bucket" {
   bucket = "${aws_s3_bucket.bucket.id}"
 
   policy = "${local.policy}"
-  
+
   depends_on = ["null_resource.delay"]
 }
 

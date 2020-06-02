@@ -27,7 +27,7 @@ variable "allow_read_data_test" {
   description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
-variable "allow_write_data" {
+variable "allow_write_data_arns" {
   type        = "list"
   default     = []
   description = "The list of fully-qualified AWS IAM ARNs authorized to write data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-*"
