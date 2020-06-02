@@ -1,0 +1,144 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowRestrictedAdministerResource",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutReplicationConfiguration",
+        "s3:PutMetricsConfiguration",
+        "s3:PutLifecycleConfiguration",
+        "s3:PutInventoryConfiguration",
+        "s3:PutEncryptionConfiguration",
+        "s3:PutBucketPublicAccessBlock",
+        "s3:PutBucketPolicy",
+        "s3:PutBucketObjectLockConfiguration",
+        "s3:PutBucketCORS",
+        "s3:PutBucketAcl",
+        "s3:PutAnalyticsConfiguration",
+        "s3:PutAccelerateConfiguration",
+        "s3:DeleteBucketWebsite",
+        "s3:DeleteBucketPolicy",
+        "s3:DeleteBucket"
+      ],
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::12345678910:user/person1",
+            "arn:aws:iam::12345678910:user/ci"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowRestrictedReadData",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListMultipartUploadParts",
+        "s3:ListBucketVersions",
+        "s3:ListBucketMultipartUploads",
+        "s3:GetObjectVersionTorrent",
+        "s3:GetObjectVersionTagging",
+        "s3:GetObjectVersionForReplication",
+        "s3:GetObjectVersionAcl",
+        "s3:GetObjectVersion",
+        "s3:GetObjectTorrent",
+        "s3:GetObjectTagging",
+        "s3:GetObjectRetention",
+        "s3:GetObjectLegalHold",
+        "s3:GetObjectAcl",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+      ],
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::12345678910:role/appA",
+            "arn:aws:iam::12345678910:user/person1"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowRestrictedWriteData",
+      "Effect": "Allow",
+      "Action": [
+        "s3:RestoreObject",
+        "s3:ReplicateTags",
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete",
+        "s3:PutObjectVersionTagging",
+        "s3:PutObjectTagging",
+        "s3:PutObjectRetention",
+        "s3:PutObjectLegalHold",
+        "s3:PutObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": [
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+      ],
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::12345678910:role/appA",
+            "arn:aws:iam::12345678910:user/person1"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowRestrictedDeleteData",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteObjectVersionTagging",
+        "s3:DeleteObjectVersion",
+        "s3:DeleteObjectTagging",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": []
+        }
+      }
+    },
+    {
+      "Sid": "DenyEveryoneElse",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+      ],
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "ArnNotEquals": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::12345678910:role/appA",
+            "arn:aws:iam::12345678910:user/person1",
+            "arn:aws:iam::12345678910:user/ci"
+          ]
+        }
+      }
+    }
+  ]
+}

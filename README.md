@@ -76,7 +76,10 @@ This code enables the following access:
 
 * allow `ci` and `person1` users to administer the bucket
 * allow `person1` user and `appA` role to read and write data from the bucket
-* deny all other access; this is the tricky bit! 
+* deny all other access; this is the tricky bit!
+
+You can see the policy this configuration generates in 
+[examples/generated.least_privilege_policy.json](examples/generated.least_privilege_policy.json). 
 
 We hope that module instantiation is easy to understand and conveys your intent.  If you think this can be improved,
 we would love your feedback as a pull request with a question, clarification, or alternative.
