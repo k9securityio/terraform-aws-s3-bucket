@@ -108,14 +108,78 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = ["*"]
     }
 
     condition {
-      test     = "ArnNotEquals"
-      values   = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data_arns, var.allow_delete_data_arns))}"]
+      test = "ArnNotEquals"
+      values = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data_arns, var.allow_delete_data_arns))}"]
       variable = "aws:PrincipalArn"
+    }
+  }
+
+  statement {
+    sid = "DenyInsecureCommunications"
+    effect = "Deny"
+    actions = ["s3:*"]
+
+    resources = [
+      "${var.s3_bucket_arn}",
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test = "Bool"
+      variable = "aws:SecureTransport"
+      values = ["false"]
+    }
+  }
+
+  statement {
+    sid = "DenyUnencryptedStorage"
+    effect = "Deny"
+    actions = ["s3:PutObject"]
+
+    resources = [
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test = "Null"
+      variable = "s3:x-amz-server-side-encryption"
+      values = ["true"]
+    }
+  }
+  
+  statement {
+    sid = "DenyStorageWithoutKMSEncyrption"
+    effect = "Deny"
+    actions = ["s3:PutObject"]
+
+    resources = [
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values = ["aws:kms"]
     }
   }
 }
