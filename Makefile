@@ -51,6 +51,9 @@ define execute
 	fi;
 endef
 
+clean:
+	rm -rf .terraform .kitchen terraform.tfstate.d
+
 shell:
 	@$(call execute,sh,)
 
