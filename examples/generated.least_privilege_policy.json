@@ -139,6 +139,51 @@
           ]
         }
       }
+    },
+    {
+      "Sid": "DenyInsecureCommunications",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+      ],
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyUnencryptedStorage",
+      "Effect": "Deny",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "Null": {
+          "s3:x-amz-server-side-encryption": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyStorageWithoutKMSEncyrption",
+      "Effect": "Deny",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "StringNotEquals": {
+          "s3:x-amz-server-side-encryption": "aws:kms"
+        }
+      }
     }
   ]
 }
