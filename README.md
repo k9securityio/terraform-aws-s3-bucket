@@ -9,15 +9,15 @@ account.  To secure your data, you'll need to:
 
 1. configure several distinct S3 resources: the bucket, the bucket policy, 'block public access' configurations
 2. create security policies that allow access by authorized principals and denies everyone else
-3. adjust standard Terraform resource configurations which generally mirror AWS API defaults to match what we now consider best practice now
+3. adjust standard Terraform resource configurations which generally mirror AWS API defaults to current best practice
 4. capture enough context to scale security, governance, risk, and compliance activities efficiently 
 
-Configuring your intended access can be especially difficult because of the interactions of IAM and
-resource policies and IAM policies without resource conditions (e.g. AWS Managed Policies).  Learn more about why
-writing these security policies is hard in this 
+Configuring your intended access can be especially difficult.  First there are complicated interactions between IAM and
+resource policies.  Second, IAM policies without resource conditions (e.g. AWS Managed Policies) overprovision access to
+all resources of that API resource type.  Learn more about why writing these security policies is hard in this 
 [blog post](https://nodramadevops.com/2020/04/why-protecting-data-in-s3-is-hard-and-a-least-privilege-bucket-policy-to-help/) 
-or [video](https://youtu.be/WIZPSuSoQq4).  The goal is to avoid an exploit of one application leading to the 
-breach of another application's data, e.g. a firewall role being used to steal credit application data.      
+or [video](https://youtu.be/WIZPSuSoQq4).  A primary access control goal is to prevent an exploit of one application 
+leading to the breach of another application's data, e.g. a firewall role being used to steal credit application data.      
 
 This module addresses these problems by helping you declare your intent and let the module worry about the details.
 Specify context about your use case and intended access, then the module will:
