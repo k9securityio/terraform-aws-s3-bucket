@@ -9,7 +9,7 @@ workflows:
 
 terraform: &terraform
   docker:
-    - image: qualimente/terraform-infra-dev:0.11
+    - image: qualimente/terraform-infra-dev:0.11.14
   working_directory: /module
 
 jobs:
