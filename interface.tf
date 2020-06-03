@@ -9,7 +9,7 @@ variable "region" {
 }
 
 variable "policy" {
-  description = "(optional) fully rendered policy; if unspecified, the secure-by-default.json policy will be rendered and used"
+  description = "(optional) fully rendered policy; if unspecified, the policy will be generated from the `allow_*` variables"
   type        = "string"
   default     = ""
 }

@@ -32,7 +32,7 @@ Specify context about your use case and intended access, then the module will:
 [![CircleCI](https://circleci.com/gh/k9securityio/tf_s3_bucket.svg?style=svg)](https://circleci.com/gh/k9securityio/tf_s3_bucket)
 
 ## Usage
-The root of this repository contains a Terraform module that manages an AWS S3 bucket.
+The root of this repository contains a Terraform module that manages an AWS S3 bucket ([S3 bucket API](interface.md)).
 
 The k9 S3 bucket module allows you to define who should have access to the bucket in terms of k9's 
 [access capability model](https://k9security.io/docs/k9-access-capability-model/).  Instead of 
@@ -44,8 +44,7 @@ who should be able to `read-data`.  This module supports the following access ca
 * `write-data`
 * `delete-data`   
 
-First, define who should access to the bucket as lists of 
-[AWS principal IDs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html).  
+First, define who should access to the bucket as lists of [AWS principal IDs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html).  
 The most common principals you will use are AWS IAM user and role ARNs such as `arn:aws:iam::12345678910:role/appA`.  
 Consider using `locals` to help document intent, keep lists synchronized, and reduce duplication.   
  
@@ -108,8 +107,8 @@ Alternatively, you can create your own S3 bucket policy and provide it to the mo
 
 ### Use the `k9policy` submodule directly 
 
-You can also generate a least privilege bucket policy using the `k9policy` submodule directly.  This enables you to
-use a k9 bucket policy with another Terraform module. 
+You can also generate a least privilege bucket policy using the `k9policy` submodule directly ([k9policy API](k9policy/interface.md)).  
+This enables you to use a k9 bucket policy with another Terraform module. 
 
 Instantiate the `k9policy` module directly like this:
 
