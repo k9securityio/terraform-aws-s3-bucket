@@ -44,8 +44,7 @@ who should be able to `read-data`.  This module supports the following access ca
 * `write-data`
 * `delete-data`   
 
-First, define who should access to the bucket as lists of 
-[AWS principal IDs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html).  
+First, define who should access to the bucket as lists of [AWS principal IDs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html).  
 The most common principals you will use are AWS IAM user and role ARNs such as `arn:aws:iam::12345678910:role/appA`.  
 Consider using `locals` to help document intent, keep lists synchronized, and reduce duplication.   
  
