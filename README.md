@@ -4,6 +4,22 @@ k9 Security's tf_s3_bucket helps you protect data by creating an AWS S3 bucket w
 least-privilege bucket policy built on the 
 [k9 access capability model](https://k9security.io/docs/k9-access-capability-model/).
 
+There are several problems engineers must solve when securing data in an S3 bucket, especially when sharing an AWS 
+account.  To secure your data, you'll need to:
+
+1. configure several distinct S3 resources: the bucket, the bucket policy, 'block public access' configurations
+2. create security policies that allow access by authorized principals and denies everyone else
+3. adjust standard Terraform resource configurations which generally mirror AWS API defaults to match what we now consider best practice now
+4. capture enough context to scale security, governance, risk, and compliance activities efficiently 
+
+Configuring your intended access can be especially difficult because of the interactions of IAM and
+resource policies and IAM policies without resource conditions (e.g. AWS Managed Policies).  Learn more about why
+writing these security policies is hard in this 
+[blog post](https://nodramadevops.com/2020/04/why-protecting-data-in-s3-is-hard-and-a-least-privilege-bucket-policy-to-help/) 
+or [video](https://youtu.be/WIZPSuSoQq4).  The goal is to avoid an exploit of one application leading to the 
+breach of another application's data, e.g. a firewall role being used to steal credit application data.      
+
+This module addresses these problems by helping you declare your intent and let the module worry about the details.
 Specify context about your use case and intended access, then the module will:
 
 * create a bucket named using your context
