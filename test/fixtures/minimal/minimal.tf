@@ -83,7 +83,7 @@ resource "null_resource" "delay" {
 }
 
 resource "aws_kms_key" "test" {
-  description = "Key for testing tf_s3_bucket infra and secure-by-default policy"
+  description = "Key for testing tf_s3_bucket infra and policy"
 }
 
 resource "aws_kms_alias" "test" {
