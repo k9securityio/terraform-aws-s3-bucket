@@ -52,7 +52,7 @@ data "template_file" "custom_bucket_policy" {
   }
 }
 
-module "bucket_with_custom_policy" {
+module "custom_bucket" {
   source = "../../../" //minimal integration test
 
   logical_name = "${local.logical_name_custom_policy}"
@@ -68,6 +68,12 @@ module "bucket_with_custom_policy" {
   app   = "${var.app}"
 
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
+
+  additional_tags = {
+    Confidentiality = "Internal"
+    Integrity       = "0.9999"
+    Availability    = "0.999"
+  }
 }
 
 resource "null_resource" "before" {}
@@ -182,7 +188,7 @@ output "module_under_test-bucket-id" {
 }
 
 output "module_under_test-custom_bucket-id" {
-  value = "${module.bucket_with_custom_policy.bucket_id}"
+  value = "${module.custom_bucket.bucket_id}"
 }
 
 output "module_under_test-bucket_with_declarative_policy-id" {

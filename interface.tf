@@ -137,6 +137,12 @@ variable "allow_delete_data_test" {
   description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
 }
 
+variable "additional_tags" {
+  type        = "map"
+  default     = {}
+  description = "A map of additional tags to merge with the module's standard tags and apply to the bucket."
+}
+
 output "bucket_id" {
   value = "${aws_s3_bucket.bucket.id}"
 }
