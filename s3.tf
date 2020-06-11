@@ -3,10 +3,10 @@ locals {
   bucket_arn  = "arn:aws:s3:::${local.bucket_name}"
 
   standard_tags = {
-    Owner = "${var.owner}"
+    Owner       = "${var.owner}"
     Environment = "${var.env}"
     Application = "${var.app}"
-    ManagedBy = "Terraform"
+    ManagedBy   = "Terraform"
   }
 
   tags = "${merge(local.standard_tags, var.additional_tags)}"
