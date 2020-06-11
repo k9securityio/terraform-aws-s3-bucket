@@ -108,20 +108,20 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
     condition {
-      test = "ArnNotEquals"
-      values = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data_arns, var.allow_delete_data_arns))}"]
+      test     = "ArnNotEquals"
+      values   = ["${distinct(concat(var.allow_administer_resource_arns, var.allow_read_data_arns, var.allow_write_data_arns, var.allow_delete_data_arns))}"]
       variable = "aws:PrincipalArn"
     }
   }
 
   statement {
-    sid = "DenyInsecureCommunications"
-    effect = "Deny"
+    sid     = "DenyInsecureCommunications"
+    effect  = "Deny"
     actions = ["s3:*"]
 
     resources = [
@@ -130,20 +130,20 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
     condition {
-      test = "Bool"
+      test     = "Bool"
       variable = "aws:SecureTransport"
-      values = ["false"]
+      values   = ["false"]
     }
   }
 
   statement {
-    sid = "DenyUnencryptedStorage"
-    effect = "Deny"
+    sid     = "DenyUnencryptedStorage"
+    effect  = "Deny"
     actions = ["s3:PutObject"]
 
     resources = [
@@ -151,20 +151,20 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
     condition {
-      test = "Null"
+      test     = "Null"
       variable = "s3:x-amz-server-side-encryption"
-      values = ["true"]
+      values   = ["true"]
     }
   }
-  
+
   statement {
-    sid = "DenyStorageWithoutKMSEncyrption"
-    effect = "Deny"
+    sid     = "DenyStorageWithoutKMSEncyrption"
+    effect  = "Deny"
     actions = ["s3:PutObject"]
 
     resources = [
@@ -172,14 +172,14 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
     condition {
-      test = "StringNotEquals"
+      test     = "StringNotEquals"
       variable = "s3:x-amz-server-side-encryption"
-      values = ["aws:kms"]
+      values   = ["aws:kms"]
     }
   }
 }
