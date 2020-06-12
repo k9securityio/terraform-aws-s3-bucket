@@ -52,6 +52,12 @@ variable "versioning_mfa_delete" {
   default     = "false"
 }
 
+variable "force_destroy" {
+  type        = "string"
+  description = "Force destruction of the bucket and all objects in it; defaults to 'false'"
+  default     = "false"
+}
+
 variable "kms_master_key_id" {
   type        = "string"
   description = "(Optional) ARN of KMS key to encrypt objects with.  Empty string means use the default master key."
