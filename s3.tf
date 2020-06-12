@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "bucket" {
     target_prefix = "${length(var.logging_target_prefix) == 0 ? "log/s3/${var.org}-${var.env}-${var.logical_name}/" : var.logging_target_prefix}"
   }
 
-  force_destroy = true
+  force_destroy = "${var.force_destroy}"
 
   tags = "${local.tags}"
 }
@@ -58,7 +58,7 @@ output "account_id" {
 module "bucket_policy" {
   source = "k9policy"
 
-  s3_bucket_arn = "${local.bucket_arn}"
+  s3_bucket_arn = "${aws_s3_bucket.bucket.arn}"
 
   allow_administer_resource_arns = "${var.allow_administer_resource_arns}"
   allow_administer_resource_test = "${var.allow_administer_resource_test}"
