@@ -58,7 +58,7 @@ output "account_id" {
 module "bucket_policy" {
   source = "k9policy"
 
-  s3_bucket_arn = "${local.bucket_arn}"
+  s3_bucket_arn = "${aws_s3_bucket.bucket.arn}"
 
   allow_administer_resource_arns = "${var.allow_administer_resource_arns}"
   allow_administer_resource_test = "${var.allow_administer_resource_test}"
