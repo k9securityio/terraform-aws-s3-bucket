@@ -17,6 +17,7 @@
 | block_public_acls |  | string | `true` | no |
 | block_public_policy |  | string | `true` | no |
 | env | Name of the environment the bucket supports | string | - | yes |
+| force_destroy | Force destruction of the bucket and all objects in it; defaults to 'false' | string | `false` | no |
 | ignore_public_acls |  | string | `true` | no |
 | kms_master_key_id | (Optional) ARN of KMS key to encrypt objects with.  Empty string means use the default master key. | string | `` | no |
 | logging_target_bucket | Bucket to use for request access logging | string | - | yes |
