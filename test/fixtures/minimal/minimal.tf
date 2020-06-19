@@ -9,7 +9,7 @@ resource "random_id" "testing_suffix" {
 
 //Create a logging bucket specifically for this test to support shipping of the access logs produced by the it_minimal bucket
 resource "aws_s3_bucket" "log_bucket" {
-  bucket        = "k9-dev-log-${random_id.testing_suffix.hex}"
+  bucket        = "k9-testenv-log-${random_id.testing_suffix.hex}"
   acl           = "log-delivery-write"
   force_destroy = "true"
 }
