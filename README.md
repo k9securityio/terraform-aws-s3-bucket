@@ -128,7 +128,16 @@ module "least_privilege_bucket_policy" {
 ### Examples
 
 See the 'minimal' test fixture at [test/fixtures/minimal/minimal.tf](test/fixtures/minimal/minimal.tf) for complete 
-examples of how to use these S3 bucket and policy modules.  
+examples of how to use these S3 bucket and policy modules.
+
+### Migrating to this module
+
+There are at least two ways to migrate to this module:
+
+1. if you are already using Terraform and want to try out a better bucket policy, you can use the policy submodule directly. This is described above and demonstrated in the [tests](test/fixtures/minimal/minimal.tf).
+2. if you want to migrate an existing bucket into this Terraform module, you can use `terraform import` or `terraform mv` to migrate the AWS bucket resource into a new Terraform module definition.  
+
+If you have questions or would like help, feel free to file a PR or [contact us](https://k9security.io/contact/) privately.
 
 ## Local Development and Testing
 
