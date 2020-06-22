@@ -89,7 +89,7 @@ resource "aws_s3_bucket_policy" "bucket" {
   depends_on = ["null_resource.delay"]
 }
 
-resource "aws_s3_bucket_public_access_block" "example" {
+resource "aws_s3_bucket_public_access_block" "bucket" {
   bucket = "${aws_s3_bucket.bucket.id}"
 
   block_public_acls       = "${var.block_public_acls}"
