@@ -150,13 +150,27 @@ module "declarative_privilege_policy" {
   allow_read_data_arns           = "${local.read_data_arns}"
   allow_write_data_arns          = "${local.write_data_arns}"
 
-  # unused: allow_delete_data          = [] (default)
-  # unused: allow_use_resource         = [] (default)
+  # unused: allow_delete_data_arns          = [] (default)
+  # unused: allow_use_resource_arns         = [] (default)
 }
 
 resource "local_file" "declarative_privilege_policy" {
   content  = "${module.declarative_privilege_policy.policy_json}"
   filename = "${path.module}/generated/declarative_privilege_policy.json"
+}
+
+module "declarative_custom_policy" {
+  source        = "../../../k9policy"
+  s3_bucket_arn = "${module.bucket_with_declarative_policy.bucket_arn}"
+
+  allow_administer_resource_arns = "${local.administrator_arns}"
+
+  allow_custom_actions_arns = ["arn:aws:iam::139710491120:user/skuenzli"]
+}
+
+resource "local_file" "declarative_custom_policy" {
+  content  = "${module.declarative_privilege_policy.policy_json}"
+  filename = "${path.module}/generated/declarative_custom_policy.json"
 }
 
 variable "logical_name" {

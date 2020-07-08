@@ -96,6 +96,28 @@ data "aws_iam_policy_document" "bucket_policy" {
   }
 
   statement {
+    sid = "AllowRestrictedCustomActions"
+
+    actions = "${var.allow_custom_actions}"
+
+    resources = [
+      "${var.s3_bucket_arn}",
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "${var.allow_custom_arns_test}"
+      values   = ["${var.allow_custom_actions_arns}"]
+      variable = "aws:PrincipalArn"
+    }
+  }
+
+  statement {
     sid = "DenyEveryoneElse"
 
     effect = "Deny"
