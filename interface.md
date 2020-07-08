@@ -31,6 +31,7 @@
 | policy | (optional) fully rendered policy; if unspecified, the policy will be generated from the `allow_*` variables | string | `` | no |
 | region | The region to instantiate the bucket in | string | - | yes |
 | restrict_public_buckets |  | string | `true` | no |
+| role | The role or function of this resource within the Application's logical architecture, e.g. load balancer, app server, database | string | `` | no |
 | versioning_enabled | Enable versioning on the bucket; defaults to 'true' | string | `true` | no |
 | versioning_mfa_delete | Require confirmation of deletes via multi-factor auth; defaults to 'false' | string | `false` | no |
 

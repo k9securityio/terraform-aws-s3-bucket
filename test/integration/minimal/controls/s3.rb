@@ -56,6 +56,8 @@ control 's3' do
       should match /AllowReadsFromEntireAccount/
     }
 
+    it { should have_tag('Role').value('blob store') }
+
     it { should have_tag('Confidentiality').value('Internal') }
     it { should have_tag('Integrity').value("0.9999") }
     it { should have_tag('Availability').value("0.999") }

@@ -34,6 +34,12 @@ variable "app" {
   description = "Name of the application the bucket supports"
 }
 
+variable "role" {
+  type        = "string"
+  description = "The role or function of this resource within the Application's logical architecture, e.g. load balancer, app server, database"
+  default     = ""
+}
+
 variable "confidentiality" {
   type        = "string"
   description = "Expected Confidentiality level of data in the bucket, e.g. Public, Internal, Confidential, Restricted"

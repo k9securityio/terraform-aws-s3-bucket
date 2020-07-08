@@ -66,6 +66,7 @@ module "custom_bucket" {
   owner = "${var.owner}"
   env   = "${var.env}"
   app   = "${var.app}"
+  role  = "blob store"
 
   confidentiality = "Internal"
   integrity       = "0.9999"

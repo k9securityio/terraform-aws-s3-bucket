@@ -9,6 +9,14 @@ locals {
     ManagedBy   = "Terraform"
   }
 
+  opt_role = {
+    exists = {
+      Role = "${var.role}"
+    }
+
+    does_not_exist = {}
+  }
+
   opt_confidentiality = {
     exists = {
       Confidentiality = "${var.confidentiality}"
@@ -34,6 +42,7 @@ locals {
   }
 
   tags = "${merge(local.standard_tags
+  , local.opt_role[var.role != "" ? "exists" : "does_not_exist"]
   , local.opt_confidentiality[var.confidentiality != "" ? "exists" : "does_not_exist"]
   , local.opt_integrity[var.integrity != "" ? "exists" : "does_not_exist"]
   , local.opt_availability[var.availability != "" ? "exists" : "does_not_exist"]
