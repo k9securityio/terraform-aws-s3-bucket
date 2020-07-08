@@ -67,12 +67,14 @@ module "custom_bucket" {
   env   = "${var.env}"
   app   = "${var.app}"
 
+  confidentiality = "Internal"
+  integrity       = "0.9999"
+  availability    = "0.999"
+
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 
   additional_tags = {
-    Confidentiality = "Internal"
-    Integrity       = "0.9999"
-    Availability    = "0.999"
+    CustomKey = "CustomValue"
   }
 }
 

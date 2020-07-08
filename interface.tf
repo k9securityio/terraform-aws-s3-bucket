@@ -34,9 +34,27 @@ variable "app" {
   description = "Name of the application the bucket supports"
 }
 
+variable "confidentiality" {
+  type        = "string"
+  description = "Expected Confidentiality level of data in the bucket, e.g. Public, Internal, Confidential, Restricted"
+  default     = ""
+}
+
+variable "integrity" {
+  type        = "string"
+  description = "Expected Integrity level of data in the bucket, e.g. 0.999, 0.9999, 0.99999, 0.999999"
+  default     = ""
+}
+
+variable "availability" {
+  type        = "string"
+  description = "Expected Availability level of data in the bucket, e.g. 0.999, 0.9999, 0.99999, 0.999999"
+  default     = ""
+}
+
 variable "acl" {
   type        = "string"
-  description = "(Optional) ACL to use for the bucket; defaults to 'private'"
+  description = "ACL to use for the bucket; defaults to 'private'"
   default     = "private"
 }
 

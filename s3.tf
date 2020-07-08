@@ -9,7 +9,35 @@ locals {
     ManagedBy   = "Terraform"
   }
 
-  tags = "${merge(local.standard_tags, var.additional_tags)}"
+  opt_confidentiality = {
+    exists = {
+      Confidentiality = "${var.confidentiality}"
+    }
+
+    does_not_exist = {}
+  }
+
+  opt_integrity = {
+    exists = {
+      Integrity = "${var.integrity}"
+    }
+
+    does_not_exist = {}
+  }
+
+  opt_availability = {
+    exists = {
+      Availability = "${var.availability}"
+    }
+
+    does_not_exist = {}
+  }
+
+  tags = "${merge(local.standard_tags
+  , local.opt_confidentiality[var.confidentiality != "" ? "exists" : "does_not_exist"]
+  , local.opt_integrity[var.integrity != "" ? "exists" : "does_not_exist"]
+  , local.opt_availability[var.availability != "" ? "exists" : "does_not_exist"]
+  , var.additional_tags)}"
 }
 
 resource "aws_s3_bucket" "bucket" {

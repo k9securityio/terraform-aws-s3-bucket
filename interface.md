@@ -3,7 +3,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| acl | (Optional) ACL to use for the bucket; defaults to 'private' | string | `private` | no |
+| acl | ACL to use for the bucket; defaults to 'private' | string | `private` | no |
 | additional_tags | A map of additional tags to merge with the module's standard tags and apply to the bucket. | map | `<map>` | no |
 | allow_administer_resource_arns | The list of fully-qualified AWS IAM ARNs authorized to administer this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-* | list | `<list>` | no |
 | allow_administer_resource_test | The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike' | string | `ArnEquals` | no |
@@ -14,11 +14,14 @@
 | allow_write_data_arns | The list of fully-qualified AWS IAM ARNs authorized to write data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-* | list | `<list>` | no |
 | allow_write_data_test | The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike' | string | `ArnEquals` | no |
 | app | Name of the application the bucket supports | string | - | yes |
+| availability | Expected Availability level of data in the bucket, e.g. 0.999, 0.9999, 0.99999, 0.999999 | string | `` | no |
 | block_public_acls |  | string | `true` | no |
 | block_public_policy |  | string | `true` | no |
+| confidentiality | Expected Confidentiality level of data in the bucket, e.g. Public, Internal, Confidential, Restricted | string | `` | no |
 | env | Name of the environment the bucket supports | string | - | yes |
 | force_destroy | Force destruction of the bucket and all objects in it; defaults to 'false' | string | `false` | no |
 | ignore_public_acls |  | string | `true` | no |
+| integrity | Expected Integrity level of data in the bucket, e.g. 0.999, 0.9999, 0.99999, 0.999999 | string | `` | no |
 | kms_master_key_id | (Optional) ARN of KMS key to encrypt objects with.  Empty string means use the default master key. | string | `` | no |
 | logging_target_bucket | Bucket to use for request access logging | string | - | yes |
 | logging_target_prefix | (Optional) Override the default log prefix path of log/s3/<bucket name>/ | string | `` | no |
