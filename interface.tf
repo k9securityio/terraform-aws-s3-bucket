@@ -46,6 +46,12 @@ variable "cost_center" {
   default     = ""
 }
 
+variable "compliance_scheme" {
+  type        = "string"
+  description = "The regulatory compliance scheme the resource’s configuration should conform to"
+  default     = ""
+}
+
 variable "confidentiality" {
   type        = "string"
   description = "Expected Confidentiality level of data in the bucket, e.g. Public, Internal, Confidential, Restricted"
