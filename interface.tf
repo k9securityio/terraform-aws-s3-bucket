@@ -40,6 +40,12 @@ variable "role" {
   default     = ""
 }
 
+variable "cost_center" {
+  type        = "string"
+  description = "The managerial accounting cost center for the resource"
+  default     = ""
+}
+
 variable "confidentiality" {
   type        = "string"
   description = "Expected Confidentiality level of data in the bucket, e.g. Public, Internal, Confidential, Restricted"
