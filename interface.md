@@ -17,7 +17,11 @@
 | availability | Expected Availability level of data in the bucket, e.g. 0.999, 0.9999, 0.99999, 0.999999 | string | `` | no |
 | block_public_acls |  | string | `true` | no |
 | block_public_policy |  | string | `true` | no |
+| business_process | The high-level business process the bucket supports | string | `` | no |
+| business_unit | The top-level organizational division that owns the resource. e.g. Consumer Retail, Enterprise Solutions, Manufacturing | string | `` | no |
+| compliance_scheme | The regulatory compliance scheme the resource’s configuration should conform to | string | `` | no |
 | confidentiality | Expected Confidentiality level of data in the bucket, e.g. Public, Internal, Confidential, Restricted | string | `` | no |
+| cost_center | The managerial accounting cost center for the bucket | string | `` | no |
 | env | Name of the environment the bucket supports | string | - | yes |
 | force_destroy | Force destruction of the bucket and all objects in it; defaults to 'false' | string | `false` | no |
 | ignore_public_acls |  | string | `true` | no |

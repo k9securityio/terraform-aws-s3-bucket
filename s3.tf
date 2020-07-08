@@ -19,20 +19,20 @@ locals {
   }
 
   opt_business_unit = {
-      exists = {
-        BusinessUnit = "${var.business_unit}"
-      }
-
-      does_not_exist = {}
+    exists = {
+      BusinessUnit = "${var.business_unit}"
     }
-  
+
+    does_not_exist = {}
+  }
+
   opt_business_process = {
-      exists = {
-        BusinessProcess = "${var.business_process}"
-      }
-
-      does_not_exist = {}
+    exists = {
+      BusinessProcess = "${var.business_process}"
     }
+
+    does_not_exist = {}
+  }
 
   opt_cost_center = {
     exists = {
@@ -43,12 +43,12 @@ locals {
   }
 
   opt_compliance_scheme = {
-      exists = {
-        ComplianceScheme = "${var.compliance_scheme}"
-      }
-
-      does_not_exist = {}
+    exists = {
+      ComplianceScheme = "${var.compliance_scheme}"
     }
+
+    does_not_exist = {}
+  }
 
   opt_confidentiality = {
     exists = {
