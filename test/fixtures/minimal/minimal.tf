@@ -165,7 +165,7 @@ module "declarative_custom_policy" {
 
   allow_administer_resource_arns = "${local.administrator_arns}"
 
-  allow_custom_actions_arns      = ["arn:aws:iam::139710491120:user/skuenzli"]
+  allow_custom_actions_arns = ["arn:aws:iam::139710491120:user/skuenzli"]
 }
 
 resource "local_file" "declarative_custom_policy" {

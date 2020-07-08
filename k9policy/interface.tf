@@ -52,7 +52,8 @@ variable "allow_delete_data_test" {
 }
 
 variable "allow_custom_actions" {
-  type        = "list"
+  type = "list"
+
   # the AllowRestrictedCustomActions statement needs a valid s3 action, so default to something innocuous: s3:GetAnalyticsConfiguration
   default     = ["s3:GetAnalyticsConfiguration"]
   description = "A custom list of S3 API actions to authorize ARNs listed in `allow_custom_actions_arns` to execute against this bucket."
@@ -68,7 +69,7 @@ variable "allow_custom_arns_test" {
   type        = "string"
   default     = "ArnEquals"
   description = "The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike'"
-}     
+}
 
 output "policy_json" {
   value = "${data.aws_iam_policy_document.bucket_policy.json}"
