@@ -58,6 +58,7 @@ control 's3' do
     }
 
     it { should have_tag('Role').value('blob store') }
+    it { should have_tag('BusinessProcess').value('Product') }
     it { should have_tag('CostCenter').value('C1234') }
     it { should have_tag('ComplianceScheme').value('HIPAA') }
 

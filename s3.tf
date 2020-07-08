@@ -17,7 +17,15 @@ locals {
 
     does_not_exist = {}
   }
-  
+
+  opt_business_process = {
+      exists = {
+        BusinessProcess = "${var.business_process}"
+      }
+
+      does_not_exist = {}
+    }
+
   opt_cost_center = {
     exists = {
       CostCenter = "${var.cost_center}"
@@ -61,6 +69,7 @@ locals {
   tags = "${merge(local.standard_tags
   , local.opt_role[var.role != "" ? "exists" : "does_not_exist"]
   , local.opt_cost_center[var.cost_center != "" ? "exists" : "does_not_exist"]
+  , local.opt_business_process[var.business_process != "" ? "exists" : "does_not_exist"]
   , local.opt_compliance_scheme[var.compliance_scheme != "" ? "exists" : "does_not_exist"]
   , local.opt_confidentiality[var.confidentiality != "" ? "exists" : "does_not_exist"]
   , local.opt_integrity[var.integrity != "" ? "exists" : "does_not_exist"]

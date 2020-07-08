@@ -68,6 +68,8 @@ module "custom_bucket" {
   app   = "${var.app}"
   role  = "blob store"
 
+  business_process = "Product"
+
   cost_center       = "C1234"
   compliance_scheme = "HIPAA"
 

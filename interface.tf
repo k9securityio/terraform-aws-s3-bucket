@@ -40,9 +40,15 @@ variable "role" {
   default     = ""
 }
 
+variable "business_process" {
+  type        = "string"
+  description = "The high-level business process the bucket supports"
+  default     = ""
+}
+
 variable "cost_center" {
   type        = "string"
-  description = "The managerial accounting cost center for the resource"
+  description = "The managerial accounting cost center for the bucket"
   default     = ""
 }
 
