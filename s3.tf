@@ -4,6 +4,7 @@ locals {
 
   standard_tags = {
     Owner       = "${var.owner}"
+    Name        = "${local.bucket_name}"
     Environment = "${var.env}"
     Application = "${var.app}"
     ManagedBy   = "Terraform"

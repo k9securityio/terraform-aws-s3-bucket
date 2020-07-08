@@ -38,8 +38,9 @@ control 's3' do
 
         it { should have_logging_enabled(target_prefix: "log/s3/#{bucket_id}/") }
 
-        it { should have_tag('Environment').value(expect_env) }
         it { should have_tag('Owner').value(expect_owner) }
+        it { should have_tag('Name').value(bucket_id) }
+        it { should have_tag('Environment').value(expect_env) }
         it { should have_tag('Application').value(expect_app) }
         it { should have_tag('ManagedBy').value('Terraform') }
       end
