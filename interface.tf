@@ -40,6 +40,12 @@ variable "role" {
   default     = ""
 }
 
+variable "business_unit" {
+  type        = "string"
+  description = "The top-level organizational division that owns the resource. e.g. Consumer Retail, Enterprise Solutions, Manufacturing"
+  default     = ""
+}
+
 variable "business_process" {
   type        = "string"
   description = "The high-level business process the bucket supports"

@@ -68,6 +68,7 @@ module "custom_bucket" {
   app   = "${var.app}"
   role  = "blob store"
 
+  business_unit    = "Enterprise Solutions"
   business_process = "Product"
 
   cost_center       = "C1234"
