@@ -66,13 +66,22 @@ module "custom_bucket" {
   owner = "${var.owner}"
   env   = "${var.env}"
   app   = "${var.app}"
+  role  = "blob store"
+
+  business_unit    = "Enterprise Solutions"
+  business_process = "Product"
+
+  cost_center       = "C1234"
+  compliance_scheme = "HIPAA"
+
+  confidentiality = "Internal"
+  integrity       = "0.9999"
+  availability    = "0.999"
 
   kms_master_key_id = "${aws_kms_alias.test.target_key_id}"
 
   additional_tags = {
-    Confidentiality = "Internal"
-    Integrity       = "0.9999"
-    Availability    = "0.999"
+    CustomKey = "CustomValue"
   }
 }
 

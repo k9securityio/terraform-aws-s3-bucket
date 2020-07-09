@@ -38,8 +38,9 @@ control 's3' do
 
         it { should have_logging_enabled(target_prefix: "log/s3/#{bucket_id}/") }
 
-        it { should have_tag('Environment').value(expect_env) }
         it { should have_tag('Owner').value(expect_owner) }
+        it { should have_tag('Name').value(bucket_id) }
+        it { should have_tag('Environment').value(expect_env) }
         it { should have_tag('Application').value(expect_app) }
         it { should have_tag('ManagedBy').value('Terraform') }
       end
@@ -56,9 +57,17 @@ control 's3' do
       should match /AllowReadsFromEntireAccount/
     }
 
+    it { should have_tag('Role').value('blob store') }
+    it { should have_tag('BusinessUnit').value('Enterprise Solutions') }
+    it { should have_tag('BusinessProcess').value('Product') }
+    it { should have_tag('CostCenter').value('C1234') }
+    it { should have_tag('ComplianceScheme').value('HIPAA') }
+
     it { should have_tag('Confidentiality').value('Internal') }
     it { should have_tag('Integrity').value("0.9999") }
     it { should have_tag('Availability').value("0.999") }
+
+    it { should have_tag('CustomKey').value('CustomValue') }
   end
 
   describe "s3 bucket #{actual_declarative_s3_id}" do
