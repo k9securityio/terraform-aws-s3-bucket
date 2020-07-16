@@ -25,7 +25,7 @@ Specify context about your use case and intended access, then the module will:
 * create a bucket named using your context
 * generate a least privilege bucket policy
 * configure encryption
-* apply appropriate tags
+* tag resources according to the [k9 Security tagging model](https://k9security.io/docs/guide-to-tagging-cloud-deployments/)
 * configure access logging
 * and more
 
@@ -96,7 +96,17 @@ This code enables the following access:
 * deny all other access; this is the tricky bit!
 
 You can see the policy this configuration generates in 
-[examples/generated.least_privilege_policy.json](examples/generated.least_privilege_policy.json). 
+[examples/generated.least_privilege_policy.json](examples/generated.least_privilege_policy.json).
+
+This module supports the full tagging model described in the k9 Security 
+[tagging guide](https://k9security.io/docs/guide-to-tagging-cloud-deployments/).  This tagging model covers resource: 
+
+* Identity and Ownership 
+* Security
+* Risk
+ 
+Most of the tagging model is exposed as optional attributes so that you can adopt it incrementally.  See the 
+([S3 bucket API](interface.md)) for the full set of options.  
 
 We hope that module instantiation is easy to understand and conveys intent.  If you think this can be improved,
 we would love your feedback as a pull request with a question, clarification, or alternative.
