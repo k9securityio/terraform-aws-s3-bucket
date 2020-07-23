@@ -1,89 +1,29 @@
 locals {
   bucket_name = "${var.org}-${var.env}-${var.logical_name}"
   bucket_arn  = "arn:aws:s3:::${local.bucket_name}"
+}
 
-  standard_tags = {
-    Owner       = "${var.owner}"
-    Name        = "${local.bucket_name}"
-    Environment = "${var.env}"
-    Application = "${var.app}"
-    ManagedBy   = "Terraform"
-  }
+module context {
+  source = "git@github.com:k9securityio/tf_context.git?ref=v0.1.0"
 
-  opt_role = {
-    exists = {
-      Role = "${var.role}"
-    }
+  name = "${local.bucket_name}"
 
-    does_not_exist = {}
-  }
+  owner = "${var.owner}"
+  env   = "${var.env}"
+  app   = "${var.app}"
+  role  = "${var.role}"
 
-  opt_business_unit = {
-    exists = {
-      BusinessUnit = "${var.business_unit}"
-    }
+  business_unit    = "${var.business_unit}"
+  business_process = "${var.business_process}"
 
-    does_not_exist = {}
-  }
+  cost_center       = "${var.cost_center}"
+  compliance_scheme = "${var.compliance_scheme}"
 
-  opt_business_process = {
-    exists = {
-      BusinessProcess = "${var.business_process}"
-    }
+  confidentiality = "${var.confidentiality}"
+  integrity       = "${var.integrity}"
+  availability    = "${var.availability}"
 
-    does_not_exist = {}
-  }
-
-  opt_cost_center = {
-    exists = {
-      CostCenter = "${var.cost_center}"
-    }
-
-    does_not_exist = {}
-  }
-
-  opt_compliance_scheme = {
-    exists = {
-      ComplianceScheme = "${var.compliance_scheme}"
-    }
-
-    does_not_exist = {}
-  }
-
-  opt_confidentiality = {
-    exists = {
-      Confidentiality = "${var.confidentiality}"
-    }
-
-    does_not_exist = {}
-  }
-
-  opt_integrity = {
-    exists = {
-      Integrity = "${var.integrity}"
-    }
-
-    does_not_exist = {}
-  }
-
-  opt_availability = {
-    exists = {
-      Availability = "${var.availability}"
-    }
-
-    does_not_exist = {}
-  }
-
-  tags = "${merge(local.standard_tags
-  , local.opt_role[var.role != "" ? "exists" : "does_not_exist"]
-  , local.opt_cost_center[var.cost_center != "" ? "exists" : "does_not_exist"]
-  , local.opt_business_unit[var.business_unit != "" ? "exists" : "does_not_exist"]
-  , local.opt_business_process[var.business_process != "" ? "exists" : "does_not_exist"]
-  , local.opt_compliance_scheme[var.compliance_scheme != "" ? "exists" : "does_not_exist"]
-  , local.opt_confidentiality[var.confidentiality != "" ? "exists" : "does_not_exist"]
-  , local.opt_integrity[var.integrity != "" ? "exists" : "does_not_exist"]
-  , local.opt_availability[var.availability != "" ? "exists" : "does_not_exist"]
-  , var.additional_tags)}"
+  additional_tags = "${var.additional_tags}"
 }
 
 resource "aws_s3_bucket" "bucket" {
@@ -114,7 +54,7 @@ resource "aws_s3_bucket" "bucket" {
 
   force_destroy = "${var.force_destroy}"
 
-  tags = "${local.tags}"
+  tags = "${module.context.tags}"
 }
 
 locals {
