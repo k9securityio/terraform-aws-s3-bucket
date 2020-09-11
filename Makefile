@@ -52,7 +52,7 @@ define execute
 endef
 
 clean:
-	rm -rf .terraform .kitchen terraform.tfstate.d
+	rm -rf .terraform .kitchen terraform.tfstate.d test/fixtures/minimal/.terraform/ test/fixtures/minimal/generated/*
 
 shell:
 	@$(call execute,sh,)
