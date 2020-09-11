@@ -15,6 +15,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     resources = [
       "${var.s3_bucket_arn}",
+      "${var.s3_bucket_arn}/*",
     ]
 
     principals {

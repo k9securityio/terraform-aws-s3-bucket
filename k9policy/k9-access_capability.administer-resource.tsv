@@ -1,6 +1,4 @@
-s3:DeleteBucket
-s3:DeleteBucketPolicy
-s3:DeleteBucketWebsite
+s3:BypassGovernanceRetention
 s3:PutAccelerateConfiguration
 s3:PutAnalyticsConfiguration
 s3:PutBucketAcl
@@ -12,4 +10,6 @@ s3:PutEncryptionConfiguration
 s3:PutInventoryConfiguration
 s3:PutLifecycleConfiguration
 s3:PutMetricsConfiguration
+s3:PutObjectAcl
+s3:PutObjectVersionAcl
 s3:PutReplicationConfiguration
