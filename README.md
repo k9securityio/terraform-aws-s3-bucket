@@ -129,9 +129,7 @@ module "least_privilege_bucket_policy" {
 
   allow_administer_resource_arns = "${local.administrator_arns}"
   allow_read_data_arns           = "${local.read_data_arns}"
-  allow_write_data               = "${local.write_data_arns}"
-  # unused: allow_delete_data          = [] (default)
-  # unused: allow_use_resource         = [] (default)
+  allow_write_data_arns          = "${local.write_data_arns}"
 }
 ```
 

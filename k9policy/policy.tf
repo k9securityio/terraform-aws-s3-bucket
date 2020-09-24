@@ -1,7 +1,6 @@
 locals {
   # future work: retrieve action mappings from k9 api
-  actions_administer_resource_all    = ["s3:*"]
-  actions_administer_resource_bucket = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.administer-resource.bucket.tsv")))))}"
+  actions_administer_resource_bucket = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.administer-resource.tsv")))))}"
   actions_use_resource               = []
   actions_read_data                  = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.read-data.tsv")))))}"
   actions_write_data                 = "${sort(distinct(compact(split("\n", file("${path.module}/k9-access_capability.write-data.tsv")))))}"
@@ -16,6 +15,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     resources = [
       "${var.s3_bucket_arn}",
+      "${var.s3_bucket_arn}/*",
     ]
 
     principals {
