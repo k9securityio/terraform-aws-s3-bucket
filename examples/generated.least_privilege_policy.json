@@ -172,7 +172,7 @@
       }
     },
     {
-      "Sid": "DenyStorageWithoutKMSEncyrption",
+      "Sid": "DenyStorageWithoutKMSEncryption",
       "Effect": "Deny",
       "Action": "s3:PutObject",
       "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
