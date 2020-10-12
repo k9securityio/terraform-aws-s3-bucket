@@ -20,6 +20,13 @@ verifier:
     - name: terraform
       controls:
         - s3
-        - terraform_state
+  systems:
+    - name: aws
+      controls:
+        - s3
+      backend: local
+      reporter:
+        - documentation
+
 suites:
   - name: minimal
