@@ -11,7 +11,6 @@ expect_owner = "platform"
 actual_s3_id = attribute 'module_under_test-bucket-id', {}
 actual_custom_s3_id = attribute 'module_under_test-custom_bucket-id', {}
 actual_declarative_s3_id = attribute 'module_under_test-bucket_with_declarative_policy-id', {}
-actual_delcarative_s3_arn = "arn:aws:s3:::#{actual_declarative_s3_id}"
 
 all_managed_buckets = [actual_s3_id, actual_custom_s3_id, actual_declarative_s3_id]
 
