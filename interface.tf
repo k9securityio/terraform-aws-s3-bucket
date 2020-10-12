@@ -3,11 +3,6 @@ variable "logical_name" {
   description = "Specify the 'logical' name of the bucket appropriate for the bucket's primary use case, e.g. media or orders"
 }
 
-variable "region" {
-  type        = string
-  description = "The region to instantiate the bucket in"
-}
-
 variable "policy" {
   description = "(optional) fully rendered policy; if unspecified, the policy will be generated from the `allow_*` variables"
   type        = string

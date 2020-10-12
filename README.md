@@ -73,8 +73,6 @@ module "s3_bucket" {
   
   # the logical name for the use case, e.g. docs, reports, media, backups 
   logical_name = "docs"
-  # the region to create the bucket in
-  region       = "us-east-1"
 
   logging_target_bucket = "name of the bucket to log to, e.g. my-logs-bucket"
 

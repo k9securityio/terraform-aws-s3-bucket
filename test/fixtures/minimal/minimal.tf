@@ -18,7 +18,6 @@ module "it_minimal" {
   source = "../../../"
 
   logical_name = "${var.logical_name}-${random_id.testing_suffix.hex}"
-  region       = var.region
 
   logging_target_bucket = aws_s3_bucket.log_bucket.id
 
@@ -56,7 +55,6 @@ module "custom_bucket" {
   source = "../../../"
 
   logical_name = local.logical_name_custom_policy
-  region       = var.region
 
   policy = data.template_file.custom_bucket_policy.rendered
 
@@ -123,7 +121,6 @@ module "bucket_with_declarative_policy" {
   source = "../../../"
 
   logical_name = local.logical_name_declarative_policy
-  region       = var.region
 
   policy = module.declarative_privilege_policy.policy_json
 
@@ -184,10 +181,6 @@ resource "local_file" "declarative_custom_policy" {
 }
 
 variable "logical_name" {
-  type = string
-}
-
-variable "region" {
   type = string
 }
 

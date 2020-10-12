@@ -29,8 +29,6 @@ module "context" {
 resource "aws_s3_bucket" "bucket" {
   bucket = local.bucket_name
 
-  region = var.region
-
   acl = var.acl
 
   versioning {
