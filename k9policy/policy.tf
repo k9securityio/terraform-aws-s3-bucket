@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 locals {
   # future work: retrieve action mappings from k9 api
   actions_administer_resource_bucket = sort(
@@ -167,9 +169,12 @@ data "aws_iam_policy_document" "bucket_policy" {
       "${var.s3_bucket_arn}/*",
     ]
 
+    # Deny access to all IAM principals in the account unless explicitly allowed
     principals {
       type        = "AWS"
-      identifiers = ["*"]
+      identifiers = [
+        data.aws_caller_identity.current.account_id,
+      ]
     }
 
     condition {
