@@ -6,22 +6,35 @@
       "Effect": "Allow",
       "Action": [
         "s3:PutReplicationConfiguration",
+        "s3:PutObjectVersionAcl",
+        "s3:PutObjectRetention",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectAcl",
         "s3:PutMetricsConfiguration",
         "s3:PutLifecycleConfiguration",
         "s3:PutInventoryConfiguration",
         "s3:PutEncryptionConfiguration",
+        "s3:PutBucketWebsite",
+        "s3:PutBucketVersioning",
+        "s3:PutBucketTagging",
+        "s3:PutBucketRequestPayment",
         "s3:PutBucketPublicAccessBlock",
         "s3:PutBucketPolicy",
         "s3:PutBucketObjectLockConfiguration",
+        "s3:PutBucketNotification",
+        "s3:PutBucketLogging",
         "s3:PutBucketCORS",
         "s3:PutBucketAcl",
         "s3:PutAnalyticsConfiguration",
         "s3:PutAccelerateConfiguration",
         "s3:DeleteBucketWebsite",
         "s3:DeleteBucketPolicy",
-        "s3:DeleteBucket"
+        "s3:BypassGovernanceRetention"
       ],
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818",
+      "Resource": [
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+      ],
       "Principal": {
         "AWS": "*"
       },
@@ -41,6 +54,7 @@
         "s3:ListMultipartUploadParts",
         "s3:ListBucketVersions",
         "s3:ListBucketMultipartUploads",
+        "s3:ListBucket",
         "s3:GetObjectVersionTorrent",
         "s3:GetObjectVersionTagging",
         "s3:GetObjectVersionForReplication",
@@ -51,11 +65,28 @@
         "s3:GetObjectRetention",
         "s3:GetObjectLegalHold",
         "s3:GetObjectAcl",
-        "s3:GetObject"
+        "s3:GetObject",
+        "s3:GetMetricsConfiguration",
+        "s3:GetLifecycleConfiguration",
+        "s3:GetInventoryConfiguration",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetBucketWebsite",
+        "s3:GetBucketVersioning",
+        "s3:GetBucketTagging",
+        "s3:GetBucketRequestPayment",
+        "s3:GetBucketPublicAccessBlock",
+        "s3:GetBucketPolicyStatus",
+        "s3:GetBucketPolicy",
+        "s3:GetBucketObjectLockConfiguration",
+        "s3:GetBucketNotification",
+        "s3:GetBucketLogging",
+        "s3:GetBucketLocation",
+        "s3:GetBucketCORS",
+        "s3:GetBucketAcl"
       ],
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
       ],
       "Principal": {
         "AWS": "*"
@@ -79,14 +110,13 @@
         "s3:ReplicateDelete",
         "s3:PutObjectVersionTagging",
         "s3:PutObjectTagging",
-        "s3:PutObjectRetention",
-        "s3:PutObjectLegalHold",
         "s3:PutObject",
+        "s3:PutBucketTagging",
         "s3:AbortMultipartUpload"
       ],
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
       ],
       "Principal": {
         "AWS": "*"
@@ -109,7 +139,24 @@
         "s3:DeleteObjectTagging",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": []
+        }
+      }
+    },
+    {
+      "Sid": "AllowRestrictedCustomActions",
+      "Effect": "Allow",
+      "Action": "s3:GetAnalyticsConfiguration",
+      "Resource": [
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+      ],
       "Principal": {
         "AWS": "*"
       },
@@ -124,11 +171,11 @@
       "Effect": "Deny",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
       ],
       "Principal": {
-        "AWS": "*"
+        "AWS": "12345678910"
       },
       "Condition": {
         "ArnNotEquals": {
@@ -145,8 +192,8 @@
       "Effect": "Deny",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818"
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
       ],
       "Principal": {
         "AWS": "*"
@@ -161,7 +208,7 @@
       "Sid": "DenyUnencryptedStorage",
       "Effect": "Deny",
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
       "Principal": {
         "AWS": "*"
       },
@@ -175,7 +222,7 @@
       "Sid": "DenyStorageWithoutKMSEncryption",
       "Effect": "Deny",
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-1895d818/*",
+      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
       "Principal": {
         "AWS": "*"
       },

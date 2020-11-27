@@ -1,4 +1,16 @@
+data "aws_caller_identity" "current" {}
+
 locals {
+  tests_used_in_statements = [
+    var.allow_administer_resource_test,
+    var.allow_custom_arns_test,
+    var.allow_delete_data_test,
+    var.allow_read_data_test,
+    var.allow_write_data_test,
+  ]
+  like_used_in_test_condition = contains(local.tests_used_in_statements, "ArnLike")
+
+
   # future work: retrieve action mappings from k9 api
   actions_administer_resource_bucket = sort(
     distinct(
@@ -167,13 +179,16 @@ data "aws_iam_policy_document" "bucket_policy" {
       "${var.s3_bucket_arn}/*",
     ]
 
+    # Deny access to all IAM principals in the account unless explicitly allowed
     principals {
       type        = "AWS"
-      identifiers = ["*"]
+      identifiers = [
+        data.aws_caller_identity.current.account_id,
+      ]
     }
 
     condition {
-      test = "ArnNotEquals"
+      test = local.like_used_in_test_condition ? "ArnNotLike" : "ArnNotEquals"
       values = distinct(
         concat(
           var.allow_administer_resource_arns,

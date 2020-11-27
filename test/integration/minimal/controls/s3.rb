@@ -23,9 +23,9 @@ control 's3' do
       describe s3_bucket(bucket_id) do
         it { should exist }
 
-        its('resource.acl.owner.display_name') { should eq 'skuenzli+qm-sandbox' }
+        its('resource.acl.owner.display_name') { should eq 'devops+k9-dev' }
         its(:acl_grants_count) { should eq 1 }
-        it { should have_acl_grant(grantee: 'skuenzli+qm-sandbox', permission: 'FULL_CONTROL') }
+        it { should have_acl_grant(grantee: 'devops+k9-dev', permission: 'FULL_CONTROL') }
 
         it { should have_versioning_enabled }
 
