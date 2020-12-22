@@ -1,6 +1,6 @@
 # Terraform S3 bucket and policy module #
 
-k9 Security's tf_s3_bucket helps you protect data by creating an AWS S3 bucket with safe defaults and a 
+k9 Security's terraform-aws-s3-bucket helps you protect data by creating an AWS S3 bucket with safe defaults and a 
 least-privilege bucket policy built on the 
 [k9 access capability model](https://k9security.io/docs/k9-access-capability-model/).
 
@@ -29,7 +29,7 @@ Specify context about your use case and intended access, then the module will:
 * configure access logging
 * and more
 
-[![CircleCI](https://circleci.com/gh/k9securityio/tf_s3_bucket.svg?style=svg)](https://circleci.com/gh/k9securityio/tf_s3_bucket)
+[![CircleCI](https://circleci.com/gh/k9securityio/terraform-aws-s3-bucket.svg?style=svg)](https://circleci.com/gh/k9securityio/terraform-aws-s3-bucket)
 
 ## Usage
 The root of this repository contains a Terraform module that manages an AWS S3 bucket ([S3 bucket API](interface.md)).
@@ -69,7 +69,7 @@ locals {
 Now instantiate the module with a definition like this:
 ```hcl-terraform
 module "s3_bucket" {
-  source = "git@github.com:k9securityio/tf_s3_bucket.git"
+  source = "git@github.com:k9securityio/terraform-aws-s3-bucket.git"
   
   # the logical name for the use case, e.g. docs, reports, media, backups 
   logical_name = "docs"
@@ -122,7 +122,7 @@ Instantiate the `k9policy` module directly like this:
 
 ```hcl-terraform
 module "least_privilege_bucket_policy" {
-  source        = "git@github.com:k9securityio/tf_s3_bucket.git//k9policy"
+  source        = "git@github.com:k9securityio/terraform-aws-s3-bucket.git//k9policy"
   s3_bucket_arn = "${module.s3_bucket.bucket_arn}"
 
   allow_administer_resource_arns = "${local.administrator_arns}"

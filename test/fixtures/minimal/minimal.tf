@@ -97,7 +97,7 @@ resource "null_resource" "delay" {
 }
 
 resource "aws_kms_key" "test" {
-  description             = "Key for testing tf_s3_bucket infra and policy"
+  description             = "Key for testing terraform-aws-s3-bucket infra and policy"
   deletion_window_in_days = 7
 }
 
