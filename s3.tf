@@ -4,7 +4,8 @@ locals {
 }
 
 module "context" {
-  source = "git@github.com:k9securityio/tf_context.git?ref=v0.2.0"
+  source  = "k9securityio/context/local"
+  version = "0.2.1"
 
   name = local.bucket_name
 
