@@ -1,6 +1,7 @@
 s3:BypassGovernanceRetention
 s3:DeleteBucketPolicy
 s3:DeleteBucketWebsite
+s3:ObjectOwnerOverrideToBucketOwner
 s3:PutAccelerateConfiguration
 s3:PutAnalyticsConfiguration
 s3:PutBucketAcl

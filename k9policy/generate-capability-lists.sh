@@ -3,7 +3,7 @@
 filename=$1
 echo "generating access capability lists from ${filename}"
 
-access_capabilities='administer-resource use-resource read-data write-data delete-data'
+access_capabilities='administer-resource read-config use-resource read-data write-data delete-data'
 
 for access_capability in ${access_capabilities};
 do
