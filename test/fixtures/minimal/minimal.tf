@@ -140,9 +140,12 @@ locals {
     "arn:aws:iam::139710491120:user/skuenzli",
   ]
 
+  read_config_arns = concat(local.administrator_arns, [
+    "arn:aws:iam::139710491120:role/k9-auditor",
+  ])
+
   read_data_arns = [
     "arn:aws:iam::139710491120:user/skuenzli",
-    "arn:aws:iam::139710491120:user/ssutton",
   ]
 
   write_data_arns = local.read_data_arns
@@ -155,6 +158,7 @@ module "declarative_privilege_policy" {
   s3_bucket_arn = module.bucket_with_declarative_policy.bucket_arn
 
   allow_administer_resource_arns = local.administrator_arns
+  allow_read_config_arns         = local.read_config_arns
   allow_read_data_arns           = local.read_data_arns
   allow_write_data_arns          = local.write_data_arns
   # unused: allow_delete_data_arns          = [] (default)

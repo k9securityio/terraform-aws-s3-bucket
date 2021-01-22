@@ -56,13 +56,14 @@ locals {
     "arn:aws:iam::12345678910:user/ci"
     , "arn:aws:iam::12345678910:user/person1"
   ]
+  read_config_arns = local.administrator_arns
 
   read_data_arns = [
     "arn:aws:iam::12345678910:user/person1",
     "arn:aws:iam::12345678910:role/appA",
   ]
 
-  write_data_arns = "${local.read_data_arns}"
+  write_data_arns = local.read_data_arns
 }
 ```
 
@@ -81,9 +82,10 @@ module "s3_bucket" {
   env   = "dev"
   app   = "someapi"
 
-  allow_administer_resource_arns = "${local.administrator_arns}"
-  allow_read_data_arns           = "${local.read_data_arns}"
-  allow_write_data_arns          = "${local.write_data_arns}"
+  allow_administer_resource_arns = local.administrator_arns
+  allow_read_config_arns         = local.read_config_arns
+  allow_read_data_arns           = local.read_data_arns
+  allow_write_data_arns          = local.write_data_arns
 }
 ```
 
@@ -125,9 +127,10 @@ module "least_privilege_bucket_policy" {
   source        = "git@github.com:k9securityio/terraform-aws-s3-bucket.git//k9policy"
   s3_bucket_arn = "${module.s3_bucket.bucket_arn}"
 
-  allow_administer_resource_arns = "${local.administrator_arns}"
-  allow_read_data_arns           = "${local.read_data_arns}"
-  allow_write_data_arns          = "${local.write_data_arns}"
+  allow_administer_resource_arns = local.administrator_arns
+  allow_read_config_arns         = local.read_config_arns
+  allow_read_data_arns           = local.read_data_arns
+  allow_write_data_arns          = local.write_data_arns
 }
 ```
 
