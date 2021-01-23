@@ -3,6 +3,7 @@ data "aws_caller_identity" "current" {}
 locals {
   tests_used_in_statements = [
     var.allow_administer_resource_test,
+    var.allow_read_config_test,
     var.allow_custom_arns_test,
     var.allow_delete_data_test,
     var.allow_read_data_test,
@@ -19,6 +20,18 @@ locals {
           "\n",
           file(
             "${path.module}/k9-access_capability.administer-resource.tsv",
+          ),
+        ),
+      ),
+    ),
+  )
+  actions_read_config = sort(
+    distinct(
+      compact(
+        split(
+          "\n",
+          file(
+            "${path.module}/k9-access_capability.read-config.tsv",
           ),
         ),
       ),
@@ -76,6 +89,28 @@ data "aws_iam_policy_document" "bucket_policy" {
     condition {
       test     = var.allow_administer_resource_test
       values   = var.allow_administer_resource_arns
+      variable = "aws:PrincipalArn"
+    }
+  }
+
+  statement {
+    sid = "AllowRestrictedReadConfig"
+
+    actions = local.actions_read_config
+
+    resources = [
+      var.s3_bucket_arn,
+      "${var.s3_bucket_arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = var.allow_read_config_test
+      values   = var.allow_read_config_arns
       variable = "aws:PrincipalArn"
     }
   }
@@ -192,6 +227,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       values = distinct(
         concat(
           var.allow_administer_resource_arns,
+          var.allow_read_config_arns,
           var.allow_read_data_arns,
           var.allow_write_data_arns,
           var.allow_delete_data_arns,

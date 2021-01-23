@@ -21,6 +21,8 @@
 | allow\_administer\_resource\_test | The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike' | `string` | `"ArnEquals"` | no |
 | allow\_delete\_data\_arns | The list of fully-qualified AWS IAM ARNs authorized to delete data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-\* | `list(string)` | `[]` | no |
 | allow\_delete\_data\_test | The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike' | `string` | `"ArnEquals"` | no |
+| allow\_read\_config\_arns | The list of fully-qualified AWS IAM ARNs authorized to read configuration of this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-\* | `list(string)` | `[]` | no |
+| allow\_read\_config\_test | The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike' | `string` | `"ArnEquals"` | no |
 | allow\_read\_data\_arns | The list of fully-qualified AWS IAM ARNs authorized to read data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-\* | `list(string)` | `[]` | no |
 | allow\_read\_data\_test | The IAM test to use in the policy statement condition, should be one of 'ArnEquals' (default) or 'ArnLike' | `string` | `"ArnEquals"` | no |
 | allow\_write\_data\_arns | The list of fully-qualified AWS IAM ARNs authorized to write data in this bucket. Wildcards are supported. e.g. arn:aws:iam::12345678910:user/ci or arn:aws:iam::12345678910:role/app-backend-\* | `list(string)` | `[]` | no |

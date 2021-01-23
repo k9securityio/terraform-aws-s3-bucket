@@ -77,6 +77,9 @@ module "bucket_policy" {
   allow_administer_resource_arns = var.allow_administer_resource_arns
   allow_administer_resource_test = var.allow_administer_resource_test
 
+  allow_read_config_arns = var.allow_read_config_arns
+  allow_read_config_test = var.allow_read_config_test
+
   allow_read_data_arns = var.allow_read_data_arns
   allow_read_data_test = var.allow_read_data_test
 
