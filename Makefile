@@ -88,6 +88,9 @@ kitchen:
 docs:
 	@$(call terraform-docs,markdown . > interface.md)
 	@$(call terraform-docs,markdown ./k9policy > k9policy/interface.md)
+	@cp test/fixtures/minimal/generated/least_privilege_example_policy.json \
+	examples/generated.least_privilege_policy.json
+	@sed -i '' 's/139710491120/12345678910/g' examples/generated.least_privilege_policy.json
 
 all: deps init format converge verify docs
 

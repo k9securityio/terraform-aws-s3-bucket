@@ -184,6 +184,41 @@ resource "local_file" "declarative_custom_policy" {
   filename = "${path.module}/generated/declarative_custom_policy.json"
 }
 
+
+locals {
+  example_administrator_arns = [
+    "arn:aws:iam::12345678910:user/ci",
+    "arn:aws:iam::12345678910:user/person1",
+  ]
+
+  example_read_config_arns = concat(local.example_administrator_arns, ["arn:aws:iam::12345678910:role/k9-auditor"])
+
+  example_read_data_arns = [
+    "arn:aws:iam::12345678910:user/person1",
+    "arn:aws:iam::12345678910:role/appA",
+  ]
+
+  example_write_data_arns = local.example_read_data_arns
+}
+
+module "least_privilege_example_policy" {
+  source = "../../../k9policy"
+
+  s3_bucket_arn = "arn:aws:s3:::sensitive-app-data"
+
+  allow_administer_resource_arns = local.example_administrator_arns
+  allow_read_config_arns         = local.example_read_config_arns
+  allow_read_data_arns           = local.example_read_data_arns
+  allow_write_data_arns          = local.example_write_data_arns
+  # unused: allow_delete_data_arns          = [] (default)
+  # unused: allow_use_resource_arns         = [] (default)
+}
+
+resource "local_file" "least_privilege_example_policy" {
+  content  = module.least_privilege_example_policy.policy_json
+  filename = "${path.module}/generated/least_privilege_example_policy.json"
+}
+
 variable "logical_name" {
   type = string
 }

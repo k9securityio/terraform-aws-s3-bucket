@@ -33,8 +33,8 @@
         "s3:BypassGovernanceRetention"
       ],
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "*"
@@ -84,8 +84,8 @@
         "s3:GetAccelerateConfiguration"
       ],
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "*"
@@ -113,8 +113,8 @@
         "s3:GetObject"
       ],
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "*"
@@ -122,8 +122,8 @@
       "Condition": {
         "ArnEquals": {
           "aws:PrincipalArn": [
-            "arn:aws:iam::12345678910:role/appA",
-            "arn:aws:iam::12345678910:user/person1"
+            "arn:aws:iam::12345678910:user/person1",
+            "arn:aws:iam::12345678910:role/appA"
           ]
         }
       }
@@ -143,8 +143,8 @@
         "s3:AbortMultipartUpload"
       ],
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "*"
@@ -152,8 +152,8 @@
       "Condition": {
         "ArnEquals": {
           "aws:PrincipalArn": [
-            "arn:aws:iam::12345678910:role/appA",
-            "arn:aws:iam::12345678910:user/person1"
+            "arn:aws:iam::12345678910:user/person1",
+            "arn:aws:iam::12345678910:role/appA"
           ]
         }
       }
@@ -167,7 +167,7 @@
         "s3:DeleteObjectTagging",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+      "Resource": "arn:aws:s3:::sensitive-app-data/*",
       "Principal": {
         "AWS": "*"
       },
@@ -182,8 +182,8 @@
       "Effect": "Allow",
       "Action": "s3:GetAnalyticsConfiguration",
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "*"
@@ -199,8 +199,8 @@
       "Effect": "Deny",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "12345678910"
@@ -208,10 +208,10 @@
       "Condition": {
         "ArnNotEquals": {
           "aws:PrincipalArn": [
-            "arn:aws:iam::12345678910:role/appA",
-            "arn:aws:iam::12345678910:role/k9-auditor",
             "arn:aws:iam::12345678910:user/person1",
-            "arn:aws:iam::12345678910:user/ci"
+            "arn:aws:iam::12345678910:user/ci",
+            "arn:aws:iam::12345678910:role/k9-auditor",
+            "arn:aws:iam::12345678910:role/appA"
           ]
         }
       }
@@ -221,8 +221,8 @@
       "Effect": "Deny",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
-        "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50"
+        "arn:aws:s3:::sensitive-app-data/*",
+        "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
         "AWS": "*"
@@ -237,7 +237,7 @@
       "Sid": "DenyUnencryptedStorage",
       "Effect": "Deny",
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+      "Resource": "arn:aws:s3:::sensitive-app-data/*",
       "Principal": {
         "AWS": "*"
       },
@@ -251,7 +251,7 @@
       "Sid": "DenyStorageWithoutKMSEncryption",
       "Effect": "Deny",
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::k9-testenv-testbucket-declarative-policy-04b60e50/*",
+      "Resource": "arn:aws:s3:::sensitive-app-data/*",
       "Principal": {
         "AWS": "*"
       },
