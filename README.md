@@ -40,6 +40,7 @@ writing a least privilege access policy directly in terms of API actions like `s
 who should be able to `read-data`.  This module supports the following access capabilities:
 
 * `administer-resource`
+* `read-config`
 * `read-data`
 * `write-data`
 * `delete-data`   
@@ -93,6 +94,7 @@ module "s3_bucket" {
 This code enables the following access:
 
 * allow `ci` and `person1` users to administer the bucket
+* allow `k9-auditor` to read the bucket's configuration
 * allow `person1` user and `appA` role to read and write data from the bucket
 * deny all other access; this is the tricky bit!
 
