@@ -227,6 +227,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       values = distinct(
         concat(
           var.allow_administer_resource_arns,
+          var.allow_read_config_arns,
           var.allow_read_data_arns,
           var.allow_write_data_arns,
           var.allow_delete_data_arns,
