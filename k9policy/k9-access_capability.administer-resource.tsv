@@ -1,4 +1,3 @@
-s3:BypassGovernanceRetention
 s3:DeleteBucketPolicy
 s3:DeleteBucketWebsite
 s3:ObjectOwnerOverrideToBucketOwner
