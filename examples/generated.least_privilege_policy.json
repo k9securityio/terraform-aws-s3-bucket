@@ -29,8 +29,7 @@
         "s3:PutAccelerateConfiguration",
         "s3:ObjectOwnerOverrideToBucketOwner",
         "s3:DeleteBucketWebsite",
-        "s3:DeleteBucketPolicy",
-        "s3:BypassGovernanceRetention"
+        "s3:DeleteBucketPolicy"
       ],
       "Resource": [
         "arn:aws:s3:::sensitive-app-data/*",
@@ -104,7 +103,6 @@
       "Sid": "AllowRestrictedReadData",
       "Effect": "Allow",
       "Action": [
-        "s3:ListBucketByTags",
         "s3:ListBucket",
         "s3:GetObjectVersionTorrent",
         "s3:GetObjectVersionForReplication",
