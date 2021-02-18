@@ -4,4 +4,3 @@ s3:GetObjectVersion
 s3:GetObjectVersionForReplication
 s3:GetObjectVersionTorrent
 s3:ListBucket
-s3:ListBucketByTags
