@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 locals {
   tests_used_in_statements = [
     var.allow_administer_resource_test,
@@ -217,9 +215,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     # Deny access to all IAM principals in the account unless explicitly allowed
     principals {
       type        = "AWS"
-      identifiers = [
-        data.aws_caller_identity.current.account_id,
-      ]
+      identifiers = ["*"]
     }
 
     condition {
