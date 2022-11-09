@@ -13,6 +13,7 @@
         "s3:PutMetricsConfiguration",
         "s3:PutLifecycleConfiguration",
         "s3:PutInventoryConfiguration",
+        "s3:PutIntelligentTieringConfiguration",
         "s3:PutEncryptionConfiguration",
         "s3:PutBucketWebsite",
         "s3:PutBucketVersioning",
@@ -20,6 +21,7 @@
         "s3:PutBucketRequestPayment",
         "s3:PutBucketPublicAccessBlock",
         "s3:PutBucketPolicy",
+        "s3:PutBucketOwnershipControls",
         "s3:PutBucketObjectLockConfiguration",
         "s3:PutBucketNotification",
         "s3:PutBucketLogging",
@@ -29,7 +31,8 @@
         "s3:PutAccelerateConfiguration",
         "s3:ObjectOwnerOverrideToBucketOwner",
         "s3:DeleteBucketWebsite",
-        "s3:DeleteBucketPolicy"
+        "s3:DeleteBucketPolicy",
+        "s3:DeleteBucket"
       ],
       "Resource": [
         "arn:aws:s3:::sensitive-app-data/*",
@@ -56,14 +59,17 @@
         "s3:ListBucketMultipartUploads",
         "s3:GetReplicationConfiguration",
         "s3:GetObjectVersionTagging",
+        "s3:GetObjectVersionAttributes",
         "s3:GetObjectVersionAcl",
         "s3:GetObjectTagging",
         "s3:GetObjectRetention",
         "s3:GetObjectLegalHold",
+        "s3:GetObjectAttributes",
         "s3:GetObjectAcl",
         "s3:GetMetricsConfiguration",
         "s3:GetLifecycleConfiguration",
         "s3:GetInventoryConfiguration",
+        "s3:GetIntelligentTieringConfiguration",
         "s3:GetEncryptionConfiguration",
         "s3:GetBucketWebsite",
         "s3:GetBucketVersioning",
@@ -138,6 +144,7 @@
         "s3:PutObjectTagging",
         "s3:PutObject",
         "s3:PutBucketTagging",
+        "s3:InitiateReplication",
         "s3:AbortMultipartUpload"
       ],
       "Resource": [
@@ -201,7 +208,7 @@
         "arn:aws:s3:::sensitive-app-data"
       ],
       "Principal": {
-        "AWS": "12345678910"
+        "AWS": "*"
       },
       "Condition": {
         "ArnNotEquals": {
