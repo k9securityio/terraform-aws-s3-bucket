@@ -15,14 +15,17 @@ s3:GetBucketTagging
 s3:GetBucketVersioning
 s3:GetBucketWebsite
 s3:GetEncryptionConfiguration
+s3:GetIntelligentTieringConfiguration
 s3:GetInventoryConfiguration
 s3:GetLifecycleConfiguration
 s3:GetMetricsConfiguration
 s3:GetObjectAcl
+s3:GetObjectAttributes
 s3:GetObjectLegalHold
 s3:GetObjectRetention
 s3:GetObjectTagging
 s3:GetObjectVersionAcl
+s3:GetObjectVersionAttributes
 s3:GetObjectVersionTagging
 s3:GetReplicationConfiguration
 s3:ListBucketMultipartUploads
